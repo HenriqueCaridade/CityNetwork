@@ -94,9 +94,26 @@ CityNetwork::Node& CityNetwork::getNode(int nodeId) {
     return nodes.at(nodeId);
 }
 
+void CityNetwork::clearVisits() {
+    for (Node& node : nodes) node.visited = false;
+}
+
+bool CityNetwork::isVisited(int nodeId) {
+    return getNode(nodeId).visited;
+}
+
+void CityNetwork::visit(int nodeId) {
+    getNode(nodeId).visited = true;
+}
+
+void CityNetwork::backtrackingHelper(int currNodeId, int currDist, path& bestPath) {
+    /* TODO */
+}
+
 CityNetwork::path CityNetwork::backtracking() {
-    // TODO: Backtracking Algorithm
-    return {};
+    path bestPath;
+    backtrackingHelper(0, 0, bestPath);
+    return bestPath;
 }
 
 CityNetwork::path CityNetwork::triangularAproxHeuristic() {

@@ -14,6 +14,7 @@
 
 
 class CityNetwork {
+public:
     struct Edge {
         int origin;
         int dest;
@@ -29,14 +30,18 @@ class CityNetwork {
         std::string label;
         double lat;
         double lon;
-        Node() : id(-1), lat(INFINITY), lon(INFINITY) {};
+        bool visited;
+        Node() : id(-1), lat(INFINITY), lon(INFINITY), visited(false) {};
         explicit Node(int id, std::list<Edge> adj = {}) :
-            id(id), adj(std::move(adj)), lat(INFINITY), lon(INFINITY) {}
+            id(id), adj(std::move(adj)), lat(INFINITY), lon(INFINITY), visited(false) {}
         Node(int id, std::string label, std::list<Edge> adj = {}) :
-            id(id), label(std::move(label)), adj(std::move(adj)), lat(INFINITY), lon(INFINITY) {}
+            id(id), label(std::move(label)), adj(std::move(adj)), lat(INFINITY), lon(INFINITY), visited(false) {}
         Node(int id, double lat, double lon, std::list<Edge> adj = {}) :
-            id(id), lat(lat), lon(lon), adj(std::move(adj)) {}
+            id(id), lat(lat), lon(lon), adj(std::move(adj)), visited(false) {}
     };
+
+    typedef std::pair<std::list<CityNetwork::Edge>, int> path;
+private:
     std::vector<Node> nodes;
     long edgeCount;
 
@@ -49,8 +54,11 @@ class CityNetwork {
     std::list<Edge> getAdj(int nodeId);
     bool nodeExists(int nodeId);
     Node& getNode(int nodeId);
+    void clearVisits();
+    bool isVisited(int nodeId);
+    void visit(int nodeId);
+    void backtrackingHelper(int currNodeId, int currDist, path& bestPath);
 public:
-    typedef std::list<CityNetwork::Edge> path;
     /**
      * @brief Default constructor.
      *
