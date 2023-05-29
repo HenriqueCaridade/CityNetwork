@@ -8,9 +8,7 @@
 #include <filesystem>
 
 #include "App.h"
-
 using namespace std;
-
 
 static void clear_screen() {
 #ifdef _WIN32
@@ -133,15 +131,14 @@ void App::mainMenu() {
             {'x', "Exit App"}
     }, [this](char choice) -> bool {
         switch(choice){
-            case '1': /* TODO */ break;
+            case '1': cout << cityNet << endl; break;
             case '2': /* TODO */ break;
             case '3': /* TODO */ break;
             case 'd': dataSelectionMenu(); return true;
             case 'x': return false;
         }
-        clear_screen();
         return true;
-    }, false);
+    }, false, false);
 }
 
 // =================== //
@@ -179,11 +176,11 @@ void App::dataSelectionMenu() {
         if (filesystem::is_directory(pathChosen)){
             if (!filesystem::exists(pathChosen + "edges.csv")) {
                 allGood = false;
-                cout << vertical << ' ' << pathChosen + "edges.csv not found in folder!" << endl;
+                cout << vertical << " edges.csv not found in folder given!" << endl;
             }
             if (!filesystem::exists(pathChosen + "nodes.csv")){
                 allGood = false;
-                cout << vertical << ' ' << pathChosen + "nodes.csv not found in folder!" << endl;
+                cout << vertical << " nodes.csv not found in folder given!" << endl;
             }
         } else if (filesystem::path(pathChosen).extension().string() != ".csv") {
             allGood = false;

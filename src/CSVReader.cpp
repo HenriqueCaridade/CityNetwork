@@ -4,7 +4,6 @@
 #include <sstream>
 
 #include "CSVReader.h"
-
 using namespace std;
 
 CSV CSVReader::read(const string& file){

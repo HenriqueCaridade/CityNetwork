@@ -7,32 +7,47 @@
 
 #include <list>
 #include <string>
-#include <unordered_map>
+#include <utility>
+#include <vector>
+#include <cmath>
 #include "CSVReader.h"
 
 class CityNetwork {
     struct Edge {
-        std::string origin;
-        std::string dest;
+        int origin;
+        int dest;
         double dist;
 
-        Edge(std::string origin, std::string dest, double dist) :
-            origin(std::move(origin)), dest(std::move(dest)), dist(dist){}
+        Edge(int origin, int dest, double dist) :
+            origin(origin), dest(dest), dist(dist){}
     };
 
     struct Node {
-        std::string name;
+        int id;
         std::list<Edge> adj;
-
-        Node(std::string name, std::list<Edge> adj) :
-            name(std::move(name)), adj(std::move(adj)) {}
+        std::string label;
+        double lat;
+        double lon;
+        Node() : id(-1), lat(INFINITY), lon(INFINITY) {};
+        explicit Node(int id, std::list<Edge> adj = {}) :
+                id(id), adj(std::move(adj)), lat(INFINITY), lon(INFINITY) {}
+        Node(int id, std::string label, std::list<Edge> adj = {}) :
+                id(id), label(std::move(label)), adj(std::move(adj)), lat(INFINITY), lon(INFINITY) {}
+        Node(int id, double lat, double lon, std::list<Edge> adj = {}) :
+            id(id), lat(lat), lon(lon), adj(std::move(adj)) {}
     };
-    std::unordered_map<std::string, Node> nodes;
+    std::vector<Node> nodes;
+    long edgeCount;
 
-    void initializeEdges(const CSV& networkCSV);
-    void initializeNodes(const CSV& stationsCSV);
+    void initializeEdges(const CSV& edgesCSV);
+    void initializeNodes(const CSV& nodesCSV);
     void initializeNetwork(const CSV& networkCSV);
     void clearData();
+    void addNode(const Node &node);
+    void addEdge(const Edge &edge);
+    std::list<Edge> getAdj(int nodeId);
+    bool nodeExists(int nodeId);
+    Node& getNode(int nodeId);
 public:
     /**
      * @brief Default constructor.
@@ -50,7 +65,10 @@ public:
      * @param datasetPath The path to the directory containing the CSV files.
      */
     void initializeData(const std::string& datasetPath, bool isDirectory);
+
+    friend std::ostream& operator<<(std::ostream& os, const CityNetwork& cityNet);
 };
+
 
 
 #endif //CITYNETWORK_CITYNETWORK_H
