@@ -26,6 +26,7 @@ class App {
     const static char corner = 'o';
     const static char vertical = '|';
     const static char horizontal = '-';
+    std::string datasetPathFull;
     std::string datasetPath;
     CityNetwork cityNet;
 

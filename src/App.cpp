@@ -22,7 +22,7 @@ App::App() = default;
 
 
 void App::initializeData() {
-    cityNet.initializeData(datasetPath, filesystem::is_directory(datasetPath));
+    cityNet.initializeData(datasetPathFull, filesystem::is_directory(datasetPathFull));
 }
 
 
@@ -123,6 +123,7 @@ void App::start(){
 }
 
 void App::mainMenu() {
+    // Print Data Selection Results
     runMenu("City Manager", {
             {'1', "Backtracking Algorithm"},
             {'2', "Triangular Approximation Heuristic"},
@@ -131,9 +132,20 @@ void App::mainMenu() {
             {'x', "Exit App"}
     }, [this](char choice) -> bool {
         switch(choice){
-            case '1': cout << cityNet << endl; break;
-            case '2': /* TODO */ break;
-            case '3': /* TODO */ break;
+            case '1': {
+                cout << "Backtracking Algorithm Solution Loading..." << endl;
+                CityNetwork::path backtrackingPath = cityNet.backtracking();
+                cout << backtrackingPath << endl;
+            } break;
+            case '2': {
+                cout << "Triangular Approximation Heuristic Solution Loading..." << endl;
+                CityNetwork::path triangularAproxPath = cityNet.triangularAproxHeuristic();
+                cout << triangularAproxPath << endl;
+            } break;
+            case '3': {
+                cout << "Other Heuristics Solution Not Implemented Yet!" << endl;
+                /* TODO */
+            } break;
             case 'd': dataSelectionMenu(); return true;
             case 'x': return false;
         }
@@ -155,44 +167,51 @@ void App::dataSelectionMenu() {
         cout << "\n" << getTitle(title) << string(spaceBetween, ' ') << '\n'
              << vertical << ' ' << text << '\n' << getBottomLine() << endl;
 
-        string pathChosen;
+        string pathChosen, pathChosenFull;
         while (true){
-            pathChosen = "";
+            pathChosen = pathChosenFull = "";
             cout << vertical << " Path:" << flush;
             cin >> pathChosen;
             if (pathChosen == "x") { running = false; break; }
-            pathChosen = projectPath + pathChosen;
-            for (char& c : pathChosen) if (c == '/') c = '\\';
-            if (filesystem::is_directory(pathChosen)) {
-                char c = pathChosen[pathChosen.size() - 1];
-                if (c != '\\') pathChosen += '\\';
+            pathChosenFull = projectPath + pathChosen;
+            for (char& c : pathChosenFull) if (c == '/') c = '\\';
+            if (filesystem::is_directory(pathChosenFull)) {
+                char c = pathChosenFull[pathChosen.size() - 1];
+                if (c != '\\') pathChosenFull += '\\';
             }
             cout << getBottomLine() << endl;
-            if (filesystem::exists(pathChosen)) break;
+            if (filesystem::exists(pathChosenFull)) break;
             cout << vertical << " Path Doesn't Exist. Try Again. (x to Leave)" << endl;
         }
         if (!running) break;
         bool allGood = true;
-        if (filesystem::is_directory(pathChosen)){
-            if (!filesystem::exists(pathChosen + "edges.csv")) {
+        if (filesystem::is_directory(pathChosenFull)){
+            if (!filesystem::exists(pathChosenFull + "edges.csv")) {
                 allGood = false;
                 cout << vertical << " edges.csv not found in folder given!" << endl;
             }
-            if (!filesystem::exists(pathChosen + "nodes.csv")){
+            if (!filesystem::exists(pathChosenFull + "nodes.csv")){
                 allGood = false;
                 cout << vertical << " nodes.csv not found in folder given!" << endl;
             }
-        } else if (filesystem::path(pathChosen).extension().string() != ".csv") {
+        } else if (filesystem::path(pathChosenFull).extension().string() != ".csv") {
             allGood = false;
-            cout << vertical << ' ' << pathChosen << endl;
-            cout << vertical << " File given is not an csv file! (is " << filesystem::path(pathChosen).extension().string() << ')' << endl;
+            cout << vertical << ' ' << pathChosenFull << endl;
+            cout << vertical << " File given is not an csv file! (is " << filesystem::path(pathChosenFull).extension().string() << ')' << endl;
         }
 
         if (allGood) {
             datasetPath = pathChosen;
-            running = false;
+            datasetPathFull = pathChosenFull;
+            cout << vertical << " Loading..." << endl;
+            try {
+                initializeData();
+                running = false;
+            } catch (std::invalid_argument& error) {
+                cout << vertical << ' ' << error.what() << '\n' << getBottomLine() << endl;
+            }
         } else cout << vertical << " Path doesn't contain the necessary files.\n" << getBottomLine() << endl;
     }
     clear_screen();
-    initializeData();
+    cout << ("Loaded From " + datasetPath + ":\n") << cityNet << endl;
 }

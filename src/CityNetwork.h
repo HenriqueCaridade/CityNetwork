@@ -12,6 +12,7 @@
 #include <cmath>
 #include "CSVReader.h"
 
+
 class CityNetwork {
     struct Edge {
         int origin;
@@ -30,9 +31,9 @@ class CityNetwork {
         double lon;
         Node() : id(-1), lat(INFINITY), lon(INFINITY) {};
         explicit Node(int id, std::list<Edge> adj = {}) :
-                id(id), adj(std::move(adj)), lat(INFINITY), lon(INFINITY) {}
+            id(id), adj(std::move(adj)), lat(INFINITY), lon(INFINITY) {}
         Node(int id, std::string label, std::list<Edge> adj = {}) :
-                id(id), label(std::move(label)), adj(std::move(adj)), lat(INFINITY), lon(INFINITY) {}
+            id(id), label(std::move(label)), adj(std::move(adj)), lat(INFINITY), lon(INFINITY) {}
         Node(int id, double lat, double lon, std::list<Edge> adj = {}) :
             id(id), lat(lat), lon(lon), adj(std::move(adj)) {}
     };
@@ -49,6 +50,7 @@ class CityNetwork {
     bool nodeExists(int nodeId);
     Node& getNode(int nodeId);
 public:
+    typedef std::list<CityNetwork::Edge> path;
     /**
      * @brief Default constructor.
      *
@@ -66,9 +68,14 @@ public:
      */
     void initializeData(const std::string& datasetPath, bool isDirectory);
 
+    path backtracking();
+
+    path triangularAproxHeuristic();
+
+    /* TODO: path otherHeuristics(); */
+
     friend std::ostream& operator<<(std::ostream& os, const CityNetwork& cityNet);
+    friend std::ostream& operator<<(std::ostream& os, const path& cityPath);
 };
-
-
 
 #endif //CITYNETWORK_CITYNETWORK_H

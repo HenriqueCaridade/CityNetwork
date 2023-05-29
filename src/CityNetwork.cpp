@@ -94,9 +94,26 @@ CityNetwork::Node& CityNetwork::getNode(int nodeId) {
     return nodes.at(nodeId);
 }
 
+CityNetwork::path CityNetwork::backtracking() {
+    // TODO: Backtracking Algorithm
+    return {};
+}
+
+CityNetwork::path CityNetwork::triangularAproxHeuristic() {
+    // TODO: Triangular Aproximation Heuristic
+    return {};
+}
+
 std::ostream &operator<<(ostream &os, const CityNetwork &cityNet) {
     os << "Nodes: " << cityNet.nodes.size() << '\n'
        << "Edge Count: " << cityNet.edgeCount << flush;
+    return os;
+}
+
+std::ostream &operator<<(ostream &os, const CityNetwork::path &cityPath) {
+    os << "Path:\n";
+    for (const CityNetwork::Edge& e : cityPath) os << e.origin << " -> " << e.dest << " [" << e.dist << "]\n";
+    os << flush;
     return os;
 }
 
