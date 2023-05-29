@@ -4,7 +4,8 @@
 
 #include "CityNetwork.h"
 #include <stdexcept>
-#include <ostream>
+#include <iostream>
+
 using namespace std;
 
 CityNetwork::CityNetwork() : edgeCount(0) {}
@@ -77,7 +78,7 @@ void CityNetwork::addEdge(const CityNetwork::Edge &edge) {
     if (nodes.size() <= edge.dest) throw std::out_of_range("There isn't a node " + to_string(edge.dest) + "!");
     edgeCount++;
     getNode(edge.origin).adj.push_back(edge);
-    getNode(edge.dest).adj.push_back(edge);
+    getNode(edge.dest).adj.emplace_back(edge.dest, edge.origin, edge.dist);
 }
 
 list<CityNetwork::Edge> CityNetwork::getAdj(int nodeId) {
@@ -94,6 +95,15 @@ CityNetwork::Node& CityNetwork::getNode(int nodeId) {
     return nodes.at(nodeId);
 }
 
+CityNetwork::Edge CityNetwork::getEdge(int nodeId1, int nodeId2) {
+    Node n1 = getNode(nodeId1);
+    for(Edge& e : n1.adj ) {
+        if(e.dest == nodeId2)
+            return e;
+    }
+    throw std::out_of_range("There are connections between the two nodes");
+}
+
 void CityNetwork::clearVisits() {
     for (Node& node : nodes) node.visited = false;
 }
@@ -106,13 +116,39 @@ void CityNetwork::visit(int nodeId) {
     getNode(nodeId).visited = true;
 }
 
-void CityNetwork::backtrackingHelper(int currNodeId, int currDist, path& bestPath) {
-    /* TODO */
+void CityNetwork::backtrackingHelper(int currNodeId, path currentPath, path& bestPath) {
+    Node& currNode = getNode(currNodeId);
+    if (currentPath.first.size() == nodes.size() - 1) {
+        try {
+            Edge e = getEdge(currNodeId, 0);
+            currentPath.second = currentPath.second + e.dist;
+            currentPath.first.push_back(e);
+            if(bestPath.second > currentPath.second )
+                bestPath = currentPath;
+            return;
+        }
+        catch (out_of_range& exception) {
+            return;
+        }
+    }
+    for(Edge e: currNode.adj){
+        Node& n = getNode(e.dest);
+        if(!n.visited) {
+            n.visited = true;
+            path newPath = currentPath;
+            newPath.first.push_back(e);
+            newPath.second = currentPath.second + e.dist;
+            backtrackingHelper(n.id, newPath, bestPath);
+            n.visited = false;
+        }
+    }
 }
 
 CityNetwork::path CityNetwork::backtracking() {
-    path bestPath;
-    backtrackingHelper(0, 0, bestPath);
+    clearVisits();
+    path bestPath = {{},INFINITY};
+    visit(0);
+    backtrackingHelper(0, {{}, 0.0}, bestPath);
     return bestPath;
 }
 
@@ -128,9 +164,15 @@ std::ostream &operator<<(ostream &os, const CityNetwork &cityNet) {
 }
 
 std::ostream &operator<<(ostream &os, const CityNetwork::path &cityPath) {
-    os << "Path:\n";
-    for (const CityNetwork::Edge& e : cityPath) os << e.origin << " -> " << e.dest << " [" << e.dist << "]\n";
-    os << flush;
+    if(cityPath.second == INFINITY )
+        os <<"Invalid Path";
+    else{
+        os << "Path:\n";
+        for (const CityNetwork::Edge& e : cityPath.first) os << e.origin << " -> " << e.dest << " [" << e.dist << "]\n";
+        os <<"Total distance: "<< cityPath.second << flush;
+    }
     return os;
 }
+
+
 

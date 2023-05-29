@@ -40,7 +40,7 @@ public:
             id(id), lat(lat), lon(lon), adj(std::move(adj)), visited(false) {}
     };
 
-    typedef std::pair<std::list<CityNetwork::Edge>, int> path;
+    typedef std::pair<std::list<CityNetwork::Edge>, double> path;
 private:
     std::vector<Node> nodes;
     long edgeCount;
@@ -53,11 +53,12 @@ private:
     void addEdge(const Edge &edge);
     std::list<Edge> getAdj(int nodeId);
     bool nodeExists(int nodeId);
+    Edge getEdge(int nodeId1, int nodeId2);
     Node& getNode(int nodeId);
     void clearVisits();
     bool isVisited(int nodeId);
     void visit(int nodeId);
-    void backtrackingHelper(int currNodeId, int currDist, path& bestPath);
+    void backtrackingHelper(int currNodeId, path currentPath, path& bestPath);
 public:
     /**
      * @brief Default constructor.
