@@ -134,13 +134,13 @@ void App::mainMenu() {
         switch(choice){
             case '1': {
                 cout << "Backtracking Algorithm Solution Loading..." << endl;
-                CityNetwork::path backtrackingPath = cityNet.backtracking();
+                CityNetwork::Path backtrackingPath = cityNet.backtracking();
                 cout << backtrackingPath << endl;
             } break;
             case '2': {
                 cout << "Triangular Approximation Heuristic Solution Loading..." << endl;
-                CityNetwork::path triangularAproxPath = cityNet.triangularAproxHeuristic();
-                cout << triangularAproxPath << endl;
+                CityNetwork::Path triangularApproxPath = cityNet.triangularApproxHeuristic();
+                cout << triangularApproxPath << endl;
             } break;
             case '3': {
                 cout << "Other Heuristics Solution Not Implemented Yet!" << endl;

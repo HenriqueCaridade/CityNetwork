@@ -19,7 +19,7 @@ public:
         int origin;
         int dest;
         double dist;
-
+        Edge() : origin(-1), dest(-1), dist(INFINITY) {}
         Edge(int origin, int dest, double dist) :
             origin(origin), dest(dest), dist(dist){}
     };
@@ -40,7 +40,27 @@ public:
             id(id), lat(lat), lon(lon), adj(std::move(adj)), visited(false) {}
     };
 
-    typedef std::pair<std::list<CityNetwork::Edge>, double> path;
+    class Path {
+        std::list<Edge> path;
+        double distance;
+    public:
+        explicit Path(std::list<Edge> path = {}, double distance = 0.0) :
+            path(std::move(path)), distance(distance) {}
+        const std::list<Edge>& getPath() const { return path; }
+        double getDistance() const { return distance; }
+        size_t getPathSize() const { return path.size(); }
+        void addToPath(Edge edge) {
+            path.push_back(edge);
+            distance += edge.dist;
+        }
+        void removeLast() {
+            distance -= path.back().dist;
+            path.pop_back();
+        }
+        bool operator<(const Path& pathObj) const {
+            return distance < pathObj.distance;
+        }
+    };
 private:
     std::vector<Node> nodes;
     long edgeCount;
@@ -58,7 +78,8 @@ private:
     void clearVisits();
     bool isVisited(int nodeId);
     void visit(int nodeId);
-    void backtrackingHelper(int currNodeId, path currentPath, path& bestPath);
+    void unvisit(int nodeId);
+    void backtrackingHelper(int currNodeId, Path currentPath, Path& bestPath);
 public:
     /**
      * @brief Default constructor.
@@ -77,14 +98,15 @@ public:
      */
     void initializeData(const std::string& datasetPath, bool isDirectory);
 
-    path backtracking();
+    Path backtracking();
 
-    path triangularAproxHeuristic();
+    Path triangularApproxHeuristic();
 
     /* TODO: path otherHeuristics(); */
 
     friend std::ostream& operator<<(std::ostream& os, const CityNetwork& cityNet);
-    friend std::ostream& operator<<(std::ostream& os, const path& cityPath);
 };
+
+std::ostream &operator<<(std::ostream &os, const CityNetwork::Path &cityPath);
 
 #endif //CITYNETWORK_CITYNETWORK_H

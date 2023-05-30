@@ -96,11 +96,8 @@ CityNetwork::Node& CityNetwork::getNode(int nodeId) {
 }
 
 CityNetwork::Edge CityNetwork::getEdge(int nodeId1, int nodeId2) {
-    Node n1 = getNode(nodeId1);
-    for(Edge& e : n1.adj ) {
-        if(e.dest == nodeId2)
-            return e;
-    }
+    for(const Edge& e : getAdj(nodeId1))
+        if(e.dest == nodeId2) return e;
     throw std::out_of_range("There are connections between the two nodes");
 }
 
@@ -116,60 +113,58 @@ void CityNetwork::visit(int nodeId) {
     getNode(nodeId).visited = true;
 }
 
-void CityNetwork::backtrackingHelper(int currNodeId, path currentPath, path& bestPath) {
-    Node& currNode = getNode(currNodeId);
-    if (currentPath.first.size() == nodes.size() - 1) {
+void CityNetwork::unvisit(int nodeId) {
+    getNode(nodeId).visited = false;
+}
+
+void CityNetwork::backtrackingHelper(int currentNodeId, Path currentPath, Path& bestPath) {
+    if (currentPath.getPathSize() == nodes.size() - 1) {
+        Edge e;
         try {
-            Edge e = getEdge(currNodeId, 0);
-            currentPath.second = currentPath.second + e.dist;
-            currentPath.first.push_back(e);
-            if(bestPath.second > currentPath.second )
-                bestPath = currentPath;
-            return;
+            e = getEdge(currentNodeId, 0);
+        } catch (out_of_range& exception) {
+            return; // No edge found from currNodeId to 0.
         }
-        catch (out_of_range& exception) {
-            return;
-        }
+        currentPath.addToPath(e);
+        if (currentPath < bestPath) bestPath = currentPath;
+        return;
     }
-    for(Edge e: currNode.adj){
-        Node& n = getNode(e.dest);
-        if(!n.visited) {
-            n.visited = true;
-            path newPath = currentPath;
-            newPath.first.push_back(e);
-            newPath.second = currentPath.second + e.dist;
-            backtrackingHelper(n.id, newPath, bestPath);
-            n.visited = false;
+    for (const Edge& e : getAdj(currentNodeId)){
+        if (!isVisited(e.dest)) {
+            visit(e.dest);
+            currentPath.addToPath(e);
+            backtrackingHelper(e.dest, currentPath, bestPath);
+            currentPath.removeLast();
+            unvisit(e.dest);
         }
     }
 }
 
-CityNetwork::path CityNetwork::backtracking() {
+CityNetwork::Path CityNetwork::backtracking() {
     clearVisits();
-    path bestPath = {{},INFINITY};
     visit(0);
-    backtrackingHelper(0, {{}, 0.0}, bestPath);
+    Path bestPath = Path({}, INFINITY);
+    backtrackingHelper(0, Path({}, 0.0), bestPath);
     return bestPath;
 }
 
-CityNetwork::path CityNetwork::triangularAproxHeuristic() {
-    // TODO: Triangular Aproximation Heuristic
-    return {};
+CityNetwork::Path CityNetwork::triangularApproxHeuristic() {
+    // TODO: Triangular Approximation Heuristic
+    return Path();
 }
 
-std::ostream &operator<<(ostream &os, const CityNetwork &cityNet) {
+ostream &operator<<(ostream &os, const CityNetwork &cityNet) {
     os << "Nodes: " << cityNet.nodes.size() << '\n'
        << "Edge Count: " << cityNet.edgeCount << flush;
     return os;
 }
 
-std::ostream &operator<<(ostream &os, const CityNetwork::path &cityPath) {
-    if(cityPath.second == INFINITY )
-        os <<"Invalid Path";
-    else{
+ostream &operator<<(ostream &os, const CityNetwork::Path &cityPath) {
+    if (cityPath.getDistance() == INFINITY) os << "Invalid Path";
+    else {
         os << "Path:\n";
-        for (const CityNetwork::Edge& e : cityPath.first) os << e.origin << " -> " << e.dest << " [" << e.dist << "]\n";
-        os <<"Total distance: "<< cityPath.second << flush;
+        for (const CityNetwork::Edge& e : cityPath.getPath()) os << e.origin << " -> " << e.dest << " [" << e.dist << "]\n";
+        os << "Total distance: "<< cityPath.getDistance() << flush;
     }
     return os;
 }
