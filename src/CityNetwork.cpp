@@ -153,8 +153,46 @@ CityNetwork::path CityNetwork::backtracking() {
 }
 
 CityNetwork::path CityNetwork::triangularAproxHeuristic() {
-    // TODO: Triangular Aproximation Heuristic
-    return {};
+    clearVisits();
+    path currentPath = {{}, 0.0};
+    path bestPath = {{}, INFINITY};
+
+    // Start from node 0
+    visit(0);
+
+    int currentNodeId = 0;
+    Node& currentNode = getNode(currentNodeId);
+
+    while (currentPath.first.size() < nodes.size() - 1) {
+        double shortestDistance = numeric_limits<double>::max();
+        int nextNodeId = -1;
+
+        for (const Edge& edge : currentNode.adj) {
+            Node& neighborNode = getNode(edge.dest);
+            if (!isVisited(neighborNode.id) && edge.dist < shortestDistance) {
+                shortestDistance = edge.dist;
+                nextNodeId = neighborNode.id;
+            }
+        }
+
+        if (nextNodeId == -1) {
+            // If there are no unvisited neighbors, return to node 0
+            Edge returnEdge = getEdge(currentNodeId, 0);
+            currentPath.second += returnEdge.dist;
+            currentPath.first.push_back(returnEdge);
+            bestPath = currentPath;
+            break;
+        }
+
+        Edge nextEdge = getEdge(currentNodeId, nextNodeId);
+        currentPath.second += nextEdge.dist;
+        currentPath.first.push_back(nextEdge);
+        visit(nextNodeId);
+        currentNodeId = nextNodeId;
+        currentNode = getNode(currentNodeId);
+    }
+
+    return bestPath;
 }
 
 std::ostream &operator<<(ostream &os, const CityNetwork &cityNet) {
