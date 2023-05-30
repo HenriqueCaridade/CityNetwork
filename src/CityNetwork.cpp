@@ -5,6 +5,7 @@
 #include "CityNetwork.h"
 #include <stdexcept>
 #include <iostream>
+#include <iomanip>
 
 using namespace std;
 
@@ -119,13 +120,13 @@ void CityNetwork::unvisit(int nodeId) {
 
 void CityNetwork::backtrackingHelper(int currentNodeId, Path currentPath, Path& bestPath) {
     if (currentPath.getPathSize() == nodes.size() - 1) {
-        Edge e;
+        Edge edge;
         try {
-            e = getEdge(currentNodeId, 0);
+            edge = getEdge(currentNodeId, 0);
         } catch (out_of_range& exception) {
             return; // No edge found from currNodeId to 0.
         }
-        currentPath.addToPath(e);
+        currentPath.addToPath(edge);
         if (currentPath < bestPath) bestPath = currentPath;
         return;
     }
@@ -144,13 +145,44 @@ CityNetwork::Path CityNetwork::backtracking() {
     clearVisits();
     visit(0);
     Path bestPath = Path({}, INFINITY);
-    backtrackingHelper(0, Path({}, 0.0), bestPath);
+    backtrackingHelper(0, Path(), bestPath);
     return bestPath;
 }
 
 CityNetwork::Path CityNetwork::triangularApproxHeuristic() {
-    // TODO: Triangular Approximation Heuristic
-    return Path();
+    clearVisits();
+    int currentNodeId = 0; // Start and end at node with zero-identifier label
+    Path currentPath = Path();
+    visit(currentNodeId);
+
+    while (currentPath.getPathSize() < nodes.size() - 1) {
+        Edge minEdge;
+        for (const Edge& edge : getAdj(currentNodeId)) {
+            if (!isVisited(edge.dest) && edge.dist < minEdge.dist) {
+                minEdge = edge;
+            }
+        }
+
+        if (minEdge.dest >= 0) {
+            currentPath.addToPath(minEdge);
+            currentNodeId = minEdge.dest;
+            visit(currentNodeId);
+        } else {
+            // No cycle possible => return invalid Path.
+            return Path({}, INFINITY);
+        }
+    }
+
+    try {
+        // Add edge from the last visited node back to the starting node
+        Edge lastEdge = getEdge(currentNodeId, 0);
+        currentPath.addToPath(lastEdge);
+    } catch (std::out_of_range& error) {
+        // No cycle possible => return invalid Path.
+        return Path({}, INFINITY);
+    }
+
+    return currentPath;
 }
 
 ostream &operator<<(ostream &os, const CityNetwork &cityNet) {
@@ -160,11 +192,15 @@ ostream &operator<<(ostream &os, const CityNetwork &cityNet) {
 }
 
 ostream &operator<<(ostream &os, const CityNetwork::Path &cityPath) {
-    if (cityPath.getDistance() == INFINITY) os << "Invalid Path";
+    if (!cityPath.isValid()) os << "Invalid Path";
     else {
         os << "Path:\n";
-        for (const CityNetwork::Edge& e : cityPath.getPath()) os << e.origin << " -> " << e.dest << " [" << e.dist << "]\n";
-        os << "Total distance: "<< cityPath.getDistance() << flush;
+        for (const CityNetwork::Edge& e : cityPath.getPath()) {
+            string origin = to_string(e.origin); origin.append(max((int) (4 - origin.size()), (int) 0), ' ');
+            string dest = to_string(e.dest); dest.append(max((int) (4 - dest.size()), (int) 0), ' ');
+            os << origin << " -> " << dest << " [" << fixed << setprecision(2) << e.dist << "]\n";
+        }
+        os << "Total distance: " << fixed << setprecision(2) << cityPath.getDistance() << flush;
     }
     return os;
 }

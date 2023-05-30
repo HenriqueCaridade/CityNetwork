@@ -49,6 +49,7 @@ public:
         const std::list<Edge>& getPath() const { return path; }
         double getDistance() const { return distance; }
         size_t getPathSize() const { return path.size(); }
+        bool isValid() const { return distance != INFINITY; }
         void addToPath(Edge edge) {
             path.push_back(edge);
             distance += edge.dist;

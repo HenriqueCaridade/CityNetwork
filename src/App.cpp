@@ -135,12 +135,20 @@ void App::mainMenu() {
             case '1': {
                 cout << "Backtracking Algorithm Solution Loading..." << endl;
                 CityNetwork::Path backtrackingPath = cityNet.backtracking();
-                cout << backtrackingPath << endl;
+                if (backtrackingPath.isValid()) {
+                    cout << backtrackingPath << endl;
+                } else {
+                    cout << "No path found!" << endl;
+                }
             } break;
             case '2': {
                 cout << "Triangular Approximation Heuristic Solution Loading..." << endl;
                 CityNetwork::Path triangularApproxPath = cityNet.triangularApproxHeuristic();
-                cout << triangularApproxPath << endl;
+                if (triangularApproxPath.isValid()) {
+                    cout << triangularApproxPath << endl;
+                } else {
+                    cout << "No path found!" << endl;
+                }
             } break;
             case '3': {
                 cout << "Other Heuristics Solution Not Implemented Yet!" << endl;
