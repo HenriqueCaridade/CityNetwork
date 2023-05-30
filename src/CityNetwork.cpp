@@ -151,6 +151,7 @@ CityNetwork::Path CityNetwork::backtracking() {
 
 CityNetwork::Path CityNetwork::triangularApproxHeuristic() {
     clearVisits();
+<<<<<<< HEAD
     int currentNodeId = 0; // Start and end at node with zero-identifier label
     Path currentPath = Path();
     visit(currentNodeId);
@@ -183,6 +184,39 @@ CityNetwork::Path CityNetwork::triangularApproxHeuristic() {
     }
 
     return currentPath;
+=======
+    Node& currentNode = getNode(0); // Start and end at node with zero-identifier label
+    path currentPath = {{}, 0.0};
+    double totalDistance = 0.0;
+    visit(currentNode.id);
+
+    while (currentPath.first.size() < nodes.size() - 1) {
+        Edge minEdge = {0, 0, INFINITY};
+        Node* nextNode = nullptr;
+
+        for (Edge edge : currentNode.adj) {
+            Node& neighborNode = getNode(edge.dest);
+            if (!isVisited(neighborNode.id) && edge.dist < minEdge.dist) {
+                minEdge = edge;
+                nextNode = &neighborNode;
+            }
+        }
+
+        if (nextNode != nullptr) {
+            currentPath.first.push_back(minEdge);
+            totalDistance += minEdge.dist;
+            currentNode = *nextNode;
+            visit(currentNode.id);
+        }
+    }
+
+    // Add edge from the last visited node back to the starting node
+    Edge lastEdge = getEdge(currentNode.id, 0);
+    currentPath.first.push_back(lastEdge);
+    totalDistance += lastEdge.dist;
+
+    return {currentPath.first, totalDistance};
+>>>>>>> 1ac3e55a417683e016df54945dd4cf1dabe47555
 }
 
 ostream &operator<<(ostream &os, const CityNetwork &cityNet) {
