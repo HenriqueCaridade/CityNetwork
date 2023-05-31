@@ -1,0 +1,156 @@
+\hypertarget{struct_city_network_1_1_node}{}\doxysection{City\+Network\+::Node Struct Reference}
+\label{struct_city_network_1_1_node}\index{CityNetwork::Node@{CityNetwork::Node}}
+
+
+Represents a node in the city network.  
+
+
+
+
+{\ttfamily \#include $<$City\+Network.\+h$>$}
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{struct_city_network_1_1_node_a369dad0e355535c5620f297546ea5cc2}{Node}} ()
+\begin{DoxyCompactList}\small\item\em Default constructor. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{struct_city_network_1_1_node_a707b6eb321f55450f68e00cde76f2398}{Node}} (int \mbox{\hyperlink{struct_city_network_1_1_node_a6b479d00336414ef7da2759d1a693c31}{id}}, std\+::list$<$ \mbox{\hyperlink{struct_city_network_1_1_edge}{Edge}} $>$ \mbox{\hyperlink{struct_city_network_1_1_node_a0914355df507b9b7cc8915f48a674a6d}{adj}}=\{\})
+\begin{DoxyCompactList}\small\item\em Constructs a node with the given ID and optional parameters. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{struct_city_network_1_1_node_ac8826bc8d166929666b90578f3ddaa0a}{Node}} (int \mbox{\hyperlink{struct_city_network_1_1_node_a6b479d00336414ef7da2759d1a693c31}{id}}, std\+::string \mbox{\hyperlink{struct_city_network_1_1_node_ad28a9e063af6b85c66cd7341fedafcac}{label}}, std\+::list$<$ \mbox{\hyperlink{struct_city_network_1_1_edge}{Edge}} $>$ \mbox{\hyperlink{struct_city_network_1_1_node_a0914355df507b9b7cc8915f48a674a6d}{adj}}=\{\})
+\begin{DoxyCompactList}\small\item\em Constructs a node with the given ID, label, and optional parameters. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{struct_city_network_1_1_node_a68fa170c55db31cd65d8e7feeb1b1f85}{Node}} (int \mbox{\hyperlink{struct_city_network_1_1_node_a6b479d00336414ef7da2759d1a693c31}{id}}, double \mbox{\hyperlink{struct_city_network_1_1_node_a0e61cba817c8b9cf268abb0855d513f9}{lat}}, double \mbox{\hyperlink{struct_city_network_1_1_node_a52934ad2d70f26abd8ece192b88dd15c}{lon}}, std\+::list$<$ \mbox{\hyperlink{struct_city_network_1_1_edge}{Edge}} $>$ \mbox{\hyperlink{struct_city_network_1_1_node_a0914355df507b9b7cc8915f48a674a6d}{adj}}=\{\})
+\begin{DoxyCompactList}\small\item\em Constructs a node with the given ID, latitude, longitude, and optional parameters. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+int \mbox{\hyperlink{struct_city_network_1_1_node_a6b479d00336414ef7da2759d1a693c31}{id}}
+\item 
+std\+::list$<$ \mbox{\hyperlink{struct_city_network_1_1_edge}{Edge}} $>$ \mbox{\hyperlink{struct_city_network_1_1_node_a0914355df507b9b7cc8915f48a674a6d}{adj}}
+\item 
+std\+::string \mbox{\hyperlink{struct_city_network_1_1_node_ad28a9e063af6b85c66cd7341fedafcac}{label}}
+\item 
+double \mbox{\hyperlink{struct_city_network_1_1_node_a0e61cba817c8b9cf268abb0855d513f9}{lat}}
+\item 
+double \mbox{\hyperlink{struct_city_network_1_1_node_a52934ad2d70f26abd8ece192b88dd15c}{lon}}
+\item 
+bool \mbox{\hyperlink{struct_city_network_1_1_node_a17c3d9e9f9e3e98e481f9ef1ffac94cb}{visited}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Represents a node in the city network. 
+
+The \mbox{\hyperlink{struct_city_network_1_1_node}{Node}} struct represents a node in the city network. It stores the ID of the node, a list of adjacent edges, label, latitude, longitude, and visited flag. 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{struct_city_network_1_1_node_a369dad0e355535c5620f297546ea5cc2}\label{struct_city_network_1_1_node_a369dad0e355535c5620f297546ea5cc2}} 
+\index{CityNetwork::Node@{CityNetwork::Node}!Node@{Node}}
+\index{Node@{Node}!CityNetwork::Node@{CityNetwork::Node}}
+\doxysubsubsection{\texorpdfstring{Node()}{Node()}\hspace{0.1cm}{\footnotesize\ttfamily [1/4]}}
+{\footnotesize\ttfamily City\+Network\+::\+Node\+::\+Node (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Default constructor. 
+
+Constructs an uninitialized node. \mbox{\Hypertarget{struct_city_network_1_1_node_a707b6eb321f55450f68e00cde76f2398}\label{struct_city_network_1_1_node_a707b6eb321f55450f68e00cde76f2398}} 
+\index{CityNetwork::Node@{CityNetwork::Node}!Node@{Node}}
+\index{Node@{Node}!CityNetwork::Node@{CityNetwork::Node}}
+\doxysubsubsection{\texorpdfstring{Node()}{Node()}\hspace{0.1cm}{\footnotesize\ttfamily [2/4]}}
+{\footnotesize\ttfamily City\+Network\+::\+Node\+::\+Node (\begin{DoxyParamCaption}\item[{int}]{id,  }\item[{std\+::list$<$ \mbox{\hyperlink{struct_city_network_1_1_edge}{Edge}} $>$}]{adj = {\ttfamily \{\}} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [explicit]}}
+
+
+
+Constructs a node with the given ID and optional parameters. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em id} & The ID of the node. \\
+\hline
+{\em adj} & The list of adjacent edges. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{struct_city_network_1_1_node_ac8826bc8d166929666b90578f3ddaa0a}\label{struct_city_network_1_1_node_ac8826bc8d166929666b90578f3ddaa0a}} 
+\index{CityNetwork::Node@{CityNetwork::Node}!Node@{Node}}
+\index{Node@{Node}!CityNetwork::Node@{CityNetwork::Node}}
+\doxysubsubsection{\texorpdfstring{Node()}{Node()}\hspace{0.1cm}{\footnotesize\ttfamily [3/4]}}
+{\footnotesize\ttfamily City\+Network\+::\+Node\+::\+Node (\begin{DoxyParamCaption}\item[{int}]{id,  }\item[{std\+::string}]{label,  }\item[{std\+::list$<$ \mbox{\hyperlink{struct_city_network_1_1_edge}{Edge}} $>$}]{adj = {\ttfamily \{\}} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Constructs a node with the given ID, label, and optional parameters. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em id} & The ID of the node. \\
+\hline
+{\em label} & The label of the node. \\
+\hline
+{\em adj} & The list of adjacent edges. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{struct_city_network_1_1_node_a68fa170c55db31cd65d8e7feeb1b1f85}\label{struct_city_network_1_1_node_a68fa170c55db31cd65d8e7feeb1b1f85}} 
+\index{CityNetwork::Node@{CityNetwork::Node}!Node@{Node}}
+\index{Node@{Node}!CityNetwork::Node@{CityNetwork::Node}}
+\doxysubsubsection{\texorpdfstring{Node()}{Node()}\hspace{0.1cm}{\footnotesize\ttfamily [4/4]}}
+{\footnotesize\ttfamily City\+Network\+::\+Node\+::\+Node (\begin{DoxyParamCaption}\item[{int}]{id,  }\item[{double}]{lat,  }\item[{double}]{lon,  }\item[{std\+::list$<$ \mbox{\hyperlink{struct_city_network_1_1_edge}{Edge}} $>$}]{adj = {\ttfamily \{\}} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Constructs a node with the given ID, latitude, longitude, and optional parameters. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em id} & The ID of the node. \\
+\hline
+{\em lat} & The latitude of the node. \\
+\hline
+{\em lon} & The longitude of the node. \\
+\hline
+{\em adj} & The list of adjacent edges. \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{struct_city_network_1_1_node_a0914355df507b9b7cc8915f48a674a6d}\label{struct_city_network_1_1_node_a0914355df507b9b7cc8915f48a674a6d}} 
+\index{CityNetwork::Node@{CityNetwork::Node}!adj@{adj}}
+\index{adj@{adj}!CityNetwork::Node@{CityNetwork::Node}}
+\doxysubsubsection{\texorpdfstring{adj}{adj}}
+{\footnotesize\ttfamily std\+::list$<$\mbox{\hyperlink{struct_city_network_1_1_edge}{Edge}}$>$ City\+Network\+::\+Node\+::adj}
+
+The list of adjacent edges. \mbox{\Hypertarget{struct_city_network_1_1_node_a6b479d00336414ef7da2759d1a693c31}\label{struct_city_network_1_1_node_a6b479d00336414ef7da2759d1a693c31}} 
+\index{CityNetwork::Node@{CityNetwork::Node}!id@{id}}
+\index{id@{id}!CityNetwork::Node@{CityNetwork::Node}}
+\doxysubsubsection{\texorpdfstring{id}{id}}
+{\footnotesize\ttfamily int City\+Network\+::\+Node\+::id}
+
+The ID of the node. \mbox{\Hypertarget{struct_city_network_1_1_node_ad28a9e063af6b85c66cd7341fedafcac}\label{struct_city_network_1_1_node_ad28a9e063af6b85c66cd7341fedafcac}} 
+\index{CityNetwork::Node@{CityNetwork::Node}!label@{label}}
+\index{label@{label}!CityNetwork::Node@{CityNetwork::Node}}
+\doxysubsubsection{\texorpdfstring{label}{label}}
+{\footnotesize\ttfamily std\+::string City\+Network\+::\+Node\+::label}
+
+The label of the node. \mbox{\Hypertarget{struct_city_network_1_1_node_a0e61cba817c8b9cf268abb0855d513f9}\label{struct_city_network_1_1_node_a0e61cba817c8b9cf268abb0855d513f9}} 
+\index{CityNetwork::Node@{CityNetwork::Node}!lat@{lat}}
+\index{lat@{lat}!CityNetwork::Node@{CityNetwork::Node}}
+\doxysubsubsection{\texorpdfstring{lat}{lat}}
+{\footnotesize\ttfamily double City\+Network\+::\+Node\+::lat}
+
+The latitude of the node. \mbox{\Hypertarget{struct_city_network_1_1_node_a52934ad2d70f26abd8ece192b88dd15c}\label{struct_city_network_1_1_node_a52934ad2d70f26abd8ece192b88dd15c}} 
+\index{CityNetwork::Node@{CityNetwork::Node}!lon@{lon}}
+\index{lon@{lon}!CityNetwork::Node@{CityNetwork::Node}}
+\doxysubsubsection{\texorpdfstring{lon}{lon}}
+{\footnotesize\ttfamily double City\+Network\+::\+Node\+::lon}
+
+The longitude of the node. \mbox{\Hypertarget{struct_city_network_1_1_node_a17c3d9e9f9e3e98e481f9ef1ffac94cb}\label{struct_city_network_1_1_node_a17c3d9e9f9e3e98e481f9ef1ffac94cb}} 
+\index{CityNetwork::Node@{CityNetwork::Node}!visited@{visited}}
+\index{visited@{visited}!CityNetwork::Node@{CityNetwork::Node}}
+\doxysubsubsection{\texorpdfstring{visited}{visited}}
+{\footnotesize\ttfamily bool City\+Network\+::\+Node\+::visited}
+
+Flag indicating if the node has been visited. 
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/City\+Network.\+h\end{DoxyCompactItemize}

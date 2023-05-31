@@ -9,15 +9,19 @@ typedef std::vector<std::string> CSVLine;
 typedef std::vector<CSVLine> CSV;
 
 /**
- * The CSVReader namespace groups up all functions that have to do with reading and csv file.
+ * @brief The CSVReader namespace groups functions related to reading CSV files.
  */
 namespace CSVReader {
     /**
-     * Reads any csv file given the file path.
-     * @param const std::string& file
-     * @return CSV aka std::vector<std::vector<std::string>>
+     * @brief Reads a CSV file from the given file path.
+     *
+     * This function reads the contents of a CSV file and returns it as a CSV structure,
+     * which is a vector of vector of strings.
+     *
+     * @param file The path to the CSV file.
+     * @return CSV The parsed CSV data.
      */
     CSV read(const std::string& file);
 }
 
-#endif //CITYNETWORK_CSVREADER_H
+#endif // CITYNETWORK_CSVREADER_H
