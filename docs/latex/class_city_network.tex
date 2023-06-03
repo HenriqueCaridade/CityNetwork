@@ -1,0 +1,129 @@
+\hypertarget{class_city_network}{}\doxysection{City\+Network Class Reference}
+\label{class_city_network}\index{CityNetwork@{CityNetwork}}
+
+
+Represents a city network with nodes and edges.  
+
+
+
+
+{\ttfamily \#include $<$City\+Network.\+h$>$}
+
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{struct_city_network_1_1_edge}{Edge}}
+\begin{DoxyCompactList}\small\item\em Represents an edge between two nodes in the city network. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{struct_city_network_1_1_node}{Node}}
+\begin{DoxyCompactList}\small\item\em Represents a node in the city network. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{class_city_network_1_1_path}{Path}}
+\begin{DoxyCompactList}\small\item\em Represents a path in the city network. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_city_network_a3d0fd9b230c1e4f4de102058e5fd9d03}{City\+Network}} ()
+\begin{DoxyCompactList}\small\item\em Default constructor. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{class_city_network_a60f2ba8ca899d37ac845ea0db7228e75}{City\+Network}} (const std\+::string \&dataset\+Path, bool is\+Directory)
+\begin{DoxyCompactList}\small\item\em Constructs a new \mbox{\hyperlink{class_city_network}{City\+Network}} object and initializes it with data from the dataset\+Path. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_city_network_aa1ae7f0acafe538e2a8fd2c1727027a0}{initialize\+Data}} (const std\+::string \&dataset\+Path, bool is\+Directory)
+\begin{DoxyCompactList}\small\item\em Initializes the \mbox{\hyperlink{class_city_network}{City\+Network}} object with data from a CSV file or directory of CSV files. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{class_city_network_1_1_path}{Path}} \mbox{\hyperlink{class_city_network_a5a16e9b08bb518b1508dcfd18c28a532}{backtracking}} ()
+\begin{DoxyCompactList}\small\item\em Perform the backtracking algorithm to find the shortest path in the city network. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{class_city_network_1_1_path}{Path}} \mbox{\hyperlink{class_city_network_ae936f4d8973b315ebc22921e2f48ea20}{triangular\+Approx\+Heuristic}} ()
+\begin{DoxyCompactList}\small\item\em Perform the triangular approximation heuristic algorithm to find an approximate shortest path in the city network. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{class_city_network_aab5d9b4f4d6f0f597397f3e90b02e226}\label{class_city_network_aab5d9b4f4d6f0f597397f3e90b02e226}} 
+\mbox{\hyperlink{class_city_network_1_1_path}{Path}} {\bfseries pure\+Greedy\+Algorithm} ()
+\end{DoxyCompactItemize}
+\doxysubsection*{Friends}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{class_city_network_a9ca5d565c0c702c18a5dbc087a0c1d11}\label{class_city_network_a9ca5d565c0c702c18a5dbc087a0c1d11}} 
+std\+::ostream \& {\bfseries operator$<$$<$} (std\+::ostream \&os, const \mbox{\hyperlink{class_city_network}{City\+Network}} \&city\+Net)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Represents a city network with nodes and edges. 
+
+The \mbox{\hyperlink{class_city_network}{City\+Network}} class manages a city network consisting of nodes and edges. It provides various operations and algorithms for working with the city network. 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{class_city_network_a3d0fd9b230c1e4f4de102058e5fd9d03}\label{class_city_network_a3d0fd9b230c1e4f4de102058e5fd9d03}} 
+\index{CityNetwork@{CityNetwork}!CityNetwork@{CityNetwork}}
+\index{CityNetwork@{CityNetwork}!CityNetwork@{CityNetwork}}
+\doxysubsubsection{\texorpdfstring{CityNetwork()}{CityNetwork()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily City\+Network\+::\+City\+Network (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Default constructor. 
+
+Creates a new empty city network manager. \mbox{\Hypertarget{class_city_network_a60f2ba8ca899d37ac845ea0db7228e75}\label{class_city_network_a60f2ba8ca899d37ac845ea0db7228e75}} 
+\index{CityNetwork@{CityNetwork}!CityNetwork@{CityNetwork}}
+\index{CityNetwork@{CityNetwork}!CityNetwork@{CityNetwork}}
+\doxysubsubsection{\texorpdfstring{CityNetwork()}{CityNetwork()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily City\+Network\+::\+City\+Network (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{dataset\+Path,  }\item[{bool}]{is\+Directory }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [explicit]}}
+
+
+
+Constructs a new \mbox{\hyperlink{class_city_network}{City\+Network}} object and initializes it with data from the dataset\+Path. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em dataset\+Path} & The path to the directory containing the CSV files. \\
+\hline
+{\em is\+Directory} & Flag indicating if the dataset\+Path is a directory. \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{class_city_network_a5a16e9b08bb518b1508dcfd18c28a532}\label{class_city_network_a5a16e9b08bb518b1508dcfd18c28a532}} 
+\index{CityNetwork@{CityNetwork}!backtracking@{backtracking}}
+\index{backtracking@{backtracking}!CityNetwork@{CityNetwork}}
+\doxysubsubsection{\texorpdfstring{backtracking()}{backtracking()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{class_city_network_1_1_path}{City\+Network\+::\+Path}} City\+Network\+::backtracking (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Perform the backtracking algorithm to find the shortest path in the city network. 
+
+\begin{DoxyReturn}{Returns}
+The shortest path found by the backtracking algorithm.
+\end{DoxyReturn}
+The time complexity of the backtracking algorithm is O((V -\/ 1)!). \mbox{\Hypertarget{class_city_network_aa1ae7f0acafe538e2a8fd2c1727027a0}\label{class_city_network_aa1ae7f0acafe538e2a8fd2c1727027a0}} 
+\index{CityNetwork@{CityNetwork}!initializeData@{initializeData}}
+\index{initializeData@{initializeData}!CityNetwork@{CityNetwork}}
+\doxysubsubsection{\texorpdfstring{initializeData()}{initializeData()}}
+{\footnotesize\ttfamily void City\+Network\+::initialize\+Data (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{dataset\+Path,  }\item[{bool}]{is\+Directory }\end{DoxyParamCaption})}
+
+
+
+Initializes the \mbox{\hyperlink{class_city_network}{City\+Network}} object with data from a CSV file or directory of CSV files. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em dataset\+Path} & The path to the directory containing the CSV files or the path to a single CSV file. \\
+\hline
+{\em is\+Directory} & Flag indicating if the dataset\+Path is a directory. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{class_city_network_ae936f4d8973b315ebc22921e2f48ea20}\label{class_city_network_ae936f4d8973b315ebc22921e2f48ea20}} 
+\index{CityNetwork@{CityNetwork}!triangularApproxHeuristic@{triangularApproxHeuristic}}
+\index{triangularApproxHeuristic@{triangularApproxHeuristic}!CityNetwork@{CityNetwork}}
+\doxysubsubsection{\texorpdfstring{triangularApproxHeuristic()}{triangularApproxHeuristic()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{class_city_network_1_1_path}{City\+Network\+::\+Path}} City\+Network\+::triangular\+Approx\+Heuristic (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Perform the triangular approximation heuristic algorithm to find an approximate shortest path in the city network. 
+
+\begin{DoxyReturn}{Returns}
+An approximate shortest path found by the triangular approximation heuristic algorithm.
+\end{DoxyReturn}
+The time complexity of the triangular approximation heuristic algorithm is O(\+E$\ast$log(\+V)). 
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+src/City\+Network.\+h\item 
+src/City\+Network.\+cpp\end{DoxyCompactItemize}

@@ -1,0 +1,142 @@
+\hypertarget{class_city_network_1_1_path}{}\doxysection{City\+Network\+::Path Class Reference}
+\label{class_city_network_1_1_path}\index{CityNetwork::Path@{CityNetwork::Path}}
+
+
+Represents a path in the city network.  
+
+
+
+
+{\ttfamily \#include $<$City\+Network.\+h$>$}
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_city_network_1_1_path_a0530388716602298d66197243eaabc69}{Path}} (std\+::list$<$ \mbox{\hyperlink{struct_city_network_1_1_edge}{Edge}} $>$ path=\{\}, double distance=0.\+0)
+\begin{DoxyCompactList}\small\item\em Default constructor. \end{DoxyCompactList}\item 
+const std\+::list$<$ \mbox{\hyperlink{struct_city_network_1_1_edge}{Edge}} $>$ \& \mbox{\hyperlink{class_city_network_1_1_path_a7b52449d944569e98289735415696ba3}{get\+Path}} () const
+\begin{DoxyCompactList}\small\item\em Get the list of edges forming the path. \end{DoxyCompactList}\item 
+double \mbox{\hyperlink{class_city_network_1_1_path_aecb6db844ed0ce11885a48f7ca5fa256}{get\+Distance}} () const
+\begin{DoxyCompactList}\small\item\em Get the total distance of the path. \end{DoxyCompactList}\item 
+size\+\_\+t \mbox{\hyperlink{class_city_network_1_1_path_ac5d34439c1302d8e9fc496d6d47750b5}{get\+Path\+Size}} () const
+\begin{DoxyCompactList}\small\item\em Get the number of edges in the path. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{class_city_network_1_1_path_a147be1d13ea394351d5faec8990d130d}{is\+Valid}} () const
+\begin{DoxyCompactList}\small\item\em Check if the path is valid (i.\+e. has a finite distance). \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_city_network_1_1_path_a4b1cf0cfe1da0771ae420b909e40993c}{add\+To\+Path}} (\mbox{\hyperlink{struct_city_network_1_1_edge}{Edge}} edge)
+\begin{DoxyCompactList}\small\item\em Add an edge to the path and update the total distance. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{class_city_network_1_1_path_ae217bc9f72bfd5199aa470922e9c42fc}\label{class_city_network_1_1_path_ae217bc9f72bfd5199aa470922e9c42fc}} 
+void {\bfseries remove\+Last} ()
+\begin{DoxyCompactList}\small\item\em Remove the last edge from the path and update the total distance. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{class_city_network_1_1_path_a74f5aa21ff99ee868edfe919aabec886}{operator$<$}} (const \mbox{\hyperlink{class_city_network_1_1_path}{Path}} \&path\+Obj) const
+\begin{DoxyCompactList}\small\item\em Compare two paths based on their total distance. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Represents a path in the city network. 
+
+The \mbox{\hyperlink{class_city_network_1_1_path}{Path}} class represents a path in the city network. It stores a list of edges that form the path and the total distance of the path. 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{class_city_network_1_1_path_a0530388716602298d66197243eaabc69}\label{class_city_network_1_1_path_a0530388716602298d66197243eaabc69}} 
+\index{CityNetwork::Path@{CityNetwork::Path}!Path@{Path}}
+\index{Path@{Path}!CityNetwork::Path@{CityNetwork::Path}}
+\doxysubsubsection{\texorpdfstring{Path()}{Path()}}
+{\footnotesize\ttfamily City\+Network\+::\+Path\+::\+Path (\begin{DoxyParamCaption}\item[{std\+::list$<$ \mbox{\hyperlink{struct_city_network_1_1_edge}{Edge}} $>$}]{path = {\ttfamily \{\}},  }\item[{double}]{distance = {\ttfamily 0.0} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [explicit]}}
+
+
+
+Default constructor. 
+
+Constructs an empty path with zero distance. 
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{class_city_network_1_1_path_a4b1cf0cfe1da0771ae420b909e40993c}\label{class_city_network_1_1_path_a4b1cf0cfe1da0771ae420b909e40993c}} 
+\index{CityNetwork::Path@{CityNetwork::Path}!addToPath@{addToPath}}
+\index{addToPath@{addToPath}!CityNetwork::Path@{CityNetwork::Path}}
+\doxysubsubsection{\texorpdfstring{addToPath()}{addToPath()}}
+{\footnotesize\ttfamily void City\+Network\+::\+Path\+::add\+To\+Path (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{struct_city_network_1_1_edge}{Edge}}}]{edge }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Add an edge to the path and update the total distance. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em edge} & The edge to add to the path. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{class_city_network_1_1_path_aecb6db844ed0ce11885a48f7ca5fa256}\label{class_city_network_1_1_path_aecb6db844ed0ce11885a48f7ca5fa256}} 
+\index{CityNetwork::Path@{CityNetwork::Path}!getDistance@{getDistance}}
+\index{getDistance@{getDistance}!CityNetwork::Path@{CityNetwork::Path}}
+\doxysubsubsection{\texorpdfstring{getDistance()}{getDistance()}}
+{\footnotesize\ttfamily double City\+Network\+::\+Path\+::get\+Distance (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Get the total distance of the path. 
+
+\begin{DoxyReturn}{Returns}
+The total distance of the path. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_city_network_1_1_path_a7b52449d944569e98289735415696ba3}\label{class_city_network_1_1_path_a7b52449d944569e98289735415696ba3}} 
+\index{CityNetwork::Path@{CityNetwork::Path}!getPath@{getPath}}
+\index{getPath@{getPath}!CityNetwork::Path@{CityNetwork::Path}}
+\doxysubsubsection{\texorpdfstring{getPath()}{getPath()}}
+{\footnotesize\ttfamily const std\+::list$<$ \mbox{\hyperlink{struct_city_network_1_1_edge}{Edge}} $>$ \& City\+Network\+::\+Path\+::get\+Path (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Get the list of edges forming the path. 
+
+\begin{DoxyReturn}{Returns}
+The list of edges forming the path. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_city_network_1_1_path_ac5d34439c1302d8e9fc496d6d47750b5}\label{class_city_network_1_1_path_ac5d34439c1302d8e9fc496d6d47750b5}} 
+\index{CityNetwork::Path@{CityNetwork::Path}!getPathSize@{getPathSize}}
+\index{getPathSize@{getPathSize}!CityNetwork::Path@{CityNetwork::Path}}
+\doxysubsubsection{\texorpdfstring{getPathSize()}{getPathSize()}}
+{\footnotesize\ttfamily size\+\_\+t City\+Network\+::\+Path\+::get\+Path\+Size (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Get the number of edges in the path. 
+
+\begin{DoxyReturn}{Returns}
+The number of edges in the path. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_city_network_1_1_path_a147be1d13ea394351d5faec8990d130d}\label{class_city_network_1_1_path_a147be1d13ea394351d5faec8990d130d}} 
+\index{CityNetwork::Path@{CityNetwork::Path}!isValid@{isValid}}
+\index{isValid@{isValid}!CityNetwork::Path@{CityNetwork::Path}}
+\doxysubsubsection{\texorpdfstring{isValid()}{isValid()}}
+{\footnotesize\ttfamily bool City\+Network\+::\+Path\+::is\+Valid (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Check if the path is valid (i.\+e. has a finite distance). 
+
+\begin{DoxyReturn}{Returns}
+True if the path is valid, false otherwise. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_city_network_1_1_path_a74f5aa21ff99ee868edfe919aabec886}\label{class_city_network_1_1_path_a74f5aa21ff99ee868edfe919aabec886}} 
+\index{CityNetwork::Path@{CityNetwork::Path}!operator$<$@{operator$<$}}
+\index{operator$<$@{operator$<$}!CityNetwork::Path@{CityNetwork::Path}}
+\doxysubsubsection{\texorpdfstring{operator$<$()}{operator<()}}
+{\footnotesize\ttfamily bool City\+Network\+::\+Path\+::operator$<$ (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{class_city_network_1_1_path}{Path}} \&}]{path\+Obj }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Compare two paths based on their total distance. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em path\+Obj} & The path object to compare with. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+True if this path has a smaller distance than the other path, false otherwise. 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/City\+Network.\+h\end{DoxyCompactItemize}
