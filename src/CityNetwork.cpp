@@ -6,34 +6,42 @@
 #include <stdexcept>
 #include <iostream>
 #include <iomanip>
+#include <queue>
+#include <stack>
 
 using namespace std;
 
-CityNetwork::CityNetwork() : edgeCount(0) {}
+CityNetwork::CityNetwork() : nodeCount(0), edgeCount(0), fakeEdgeCount(0) {}
 
-CityNetwork::CityNetwork(const string &datasetPath, bool isDirectory) : edgeCount(0) {
+CityNetwork::CityNetwork(const string &datasetPath, bool isDirectory) : nodeCount(0), edgeCount(0), fakeEdgeCount(0) {
     initializeData(datasetPath, isDirectory);
 }
 
 void CityNetwork::initializeData(const string &datasetPath, bool isDirectory) {
     clearData();
     if (isDirectory) { // Expect edges.csv and nodes.csv
+        graphType = graphLatLon;
         initializeNodes(CSVReader::read(datasetPath + "nodes.csv"));
         initializeEdges(CSVReader::read(datasetPath + "edges.csv"));
     } else {
-        initializeNetwork(CSVReader::read(datasetPath));
+        CSV networkCSV = CSVReader::read(datasetPath);
+        graphType = (networkCSV[0].size() == 5) ? graphLabeled : graphNormal;
+        initializeNetwork(networkCSV);
     }
+    completeEdges();
 }
 
 void CityNetwork::clearData() {
     nodes.clear();
+    nodeCount = 0;
     edgeCount = 0;
+    fakeEdgeCount = 0;
 }
 
 void CityNetwork::initializeNetwork(const CSV &networkCSV) {
     // From a single csv file.
     int skipFirstLine = isalpha(networkCSV[0][0][0]) ? 1 : 0;
-    bool hasLabels = networkCSV[0].size() == 5;
+    bool hasLabels = graphType == graphLabeled;
     for (int i = skipFirstLine; i < networkCSV.size(); i++) {
         const CSVLine &line = networkCSV[i];
         if (line.size() != (hasLabels ? 5 : 3)) throw std::invalid_argument("File given isn't formatted correctly!");
@@ -47,16 +55,24 @@ void CityNetwork::initializeNetwork(const CSV &networkCSV) {
             if (hasLabels) addNode(Node(destId, line[4]));
             else addNode(Node(destId));
         }
-        addEdge(Edge(originId, destId, stoi(line[2])));
+    }
+    for (Node &node : nodes) { node.adj.resize(nodes.size()); }
+    for (int i = skipFirstLine; i < networkCSV.size(); i++) {
+        const CSVLine &line = networkCSV[i];
+        addEdge(Edge(stoi(line[0]), stoi(line[1]), stod(line[2])));
     }
 }
 
 void CityNetwork::initializeNodes(const CSV &nodesCSV) {
     // From nodes.csv
+    size_t nodesSize = nodesCSV.size() - 1;
+    nodes.resize(nodesSize);
     for (int i = 1; i < nodesCSV.size(); i++) { // Skip first line
         const CSVLine &line = nodesCSV[i];
         if (line.size() != 3) throw std::invalid_argument("nodes.csv isn't formatted correctly!");
-        addNode(Node(stoi(line[0]), stod(line[1]), stod(line[2])));
+        Node n = Node(stoi(line[0]), stod(line[1]), stod(line[2]));
+        n.adj.resize(nodesSize);
+        addNode(n);
     }
 }
 
@@ -69,8 +85,27 @@ void CityNetwork::initializeEdges(const CSV &edgesCSV) {
     }
 }
 
+void CityNetwork::completeEdges() {
+    for (Node &node : nodes) {
+        for (int id = 0; id < nodes.size(); id++) {
+            if (node.id == id)
+                continue;
+            Edge &edge = node.adj[id];
+            if (edge.origin == -1 or edge.dest == -1) { // Non-existent Edge
+                if (graphType == graphLatLon) {
+                    addEdge(Edge(node.id, id, node - getNode(id), false));
+                } else {
+                    addEdge(Edge(node.id, id, INFINITY, false));
+                }
+                fakeEdgeCount++;
+            }
+        }
+    }
+}
+
 void CityNetwork::addNode(const Node &node) {
     if (nodes.size() <= node.id) nodes.resize(node.id + 1);
+    nodeCount++;
     nodes.at(node.id) = node;
 }
 
@@ -78,11 +113,11 @@ void CityNetwork::addEdge(const CityNetwork::Edge &edge) {
     if (nodes.size() <= edge.origin) throw std::out_of_range("There isn't a node " + to_string(edge.origin) + "!");
     if (nodes.size() <= edge.dest) throw std::out_of_range("There isn't a node " + to_string(edge.dest) + "!");
     edgeCount++;
-    getNode(edge.origin).adj.push_back(edge);
-    getNode(edge.dest).adj.emplace_back(edge.dest, edge.origin, edge.dist);
+    getNode(edge.origin).adj.at(edge.dest) = edge;
+    getNode(edge.dest).adj.at(edge.origin) = edge.reverse();
 }
 
-list<CityNetwork::Edge> CityNetwork::getAdj(int nodeId) {
+vector<CityNetwork::Edge> CityNetwork::getAdj(int nodeId) {
     if (nodes.size() <= nodeId) throw std::out_of_range("There isn't a node " + to_string(nodeId) + "!");
     return getNode(nodeId).adj;
 }
@@ -97,9 +132,9 @@ CityNetwork::Node& CityNetwork::getNode(int nodeId) {
 }
 
 CityNetwork::Edge CityNetwork::getEdge(int nodeId1, int nodeId2) {
-    for(const Edge& e : getAdj(nodeId1))
-        if(e.dest == nodeId2) return e;
-    throw std::out_of_range("There are connections between the two nodes");
+    if (nodes.size() <= nodeId1) throw std::out_of_range("There isn't a node " + to_string(nodeId1) + "!");
+    if (nodes.size() <= nodeId2) throw std::out_of_range("There isn't a node " + to_string(nodeId2) + "!");
+    return getAdj(nodeId1).at(nodeId2);
 }
 
 void CityNetwork::clearVisits() {
@@ -118,25 +153,38 @@ void CityNetwork::unvisit(int nodeId) {
     getNode(nodeId).visited = false;
 }
 
+void CityNetwork::clearPrevs() {
+    for (Node& node : nodes) node.prev = -1;
+}
+
+int CityNetwork::getPrev(int nodeId) {
+    return getNode(nodeId).prev;
+}
+
+void CityNetwork::setPrev(int nodeId, int prev) {
+    getNode(nodeId).prev = prev;
+}
+
+void CityNetwork::unsetPrev(int nodeId) {
+    getNode(nodeId).prev = -1;
+}
+
 void CityNetwork::backtrackingHelper(int currentNodeId, Path currentPath, Path& bestPath) {
-    if (currentPath.getPathSize() == nodes.size() - 1) {
-        Edge edge;
-        try {
-            edge = getEdge(currentNodeId, 0);
-        } catch (out_of_range& exception) {
-            return; // No edge found from currNodeId to 0.
-        }
+    if (currentPath.getPathSize() == nodeCount - 1) {
+        Edge edge = getEdge(currentNodeId, 0);
+        if (!edge.valid || !edge.real) return;
         currentPath.addToPath(edge);
         if (currentPath < bestPath) bestPath = currentPath;
         return;
     }
-    for (const Edge& e : getAdj(currentNodeId)){
-        if (!isVisited(e.dest)) {
-            visit(e.dest);
-            currentPath.addToPath(e);
-            backtrackingHelper(e.dest, currentPath, bestPath);
+    for (const Edge& edge : getAdj(currentNodeId)){
+        if (!edge.valid) continue;
+        if (!isVisited(edge.dest) and edge.real) {
+            visit(edge.dest);
+            currentPath.addToPath(edge);
+            backtrackingHelper(edge.dest, currentPath, bestPath);
             currentPath.removeLast();
-            unvisit(e.dest);
+            unvisit(edge.dest);
         }
     }
 }
@@ -149,45 +197,77 @@ CityNetwork::Path CityNetwork::backtracking() {
     return bestPath;
 }
 
-CityNetwork::Path CityNetwork::triangularApproxHeuristic() {
+vector<int> CityNetwork::calcMST(int rootId) {
+    clearPrevs();
     clearVisits();
-    int currentNodeId = 0; // Start and end at node with zero-identifier label
-    Path currentPath = Path();
-    visit(currentNodeId);
-
-    while (currentPath.getPathSize() < nodes.size() - 1) {
-        Edge minEdge;
-        for (const Edge& edge : getAdj(currentNodeId)) {
-            if (!isVisited(edge.dest) && edge.dist < minEdge.dist) {
-                minEdge = edge;
+    priority_queue<pair<double, pair<int, int>>, vector<pair<double, pair<int, int>>>, greater<>> pq;
+    pq.emplace(0.0, pair<int,int>{rootId, -1});
+    while (!pq.empty()) {
+        auto [_, nodeIds] = pq.top(); pq.pop();
+        auto [nodeId, prevId] = nodeIds;
+        if (isVisited(nodeId)) continue;
+        setPrev(nodeId, prevId);
+        visit(nodeId);
+        for (const Edge& edge : getAdj(nodeId)) {
+            if (!edge.valid) continue;
+            if (!isVisited(edge.dest) and edge.real) {
+                pq.emplace(edge.dist, pair<int,int>{edge.dest, nodeId});
             }
         }
-
-        if (minEdge.dest >= 0) {
-            currentPath.addToPath(minEdge);
-            currentNodeId = minEdge.dest;
-            visit(currentNodeId);
-        } else {
-            // No cycle possible => return invalid Path.
-            return Path({}, INFINITY);
+    }
+    vector<int> mstPath;
+    stack<int> toTraverse;
+    toTraverse.push(rootId);
+    while (!toTraverse.empty()){
+        int nodeId = toTraverse.top();
+        toTraverse.pop();
+        mstPath.push_back(nodeId);
+        const Node& node = getNode(nodeId);
+        for (auto it = node.adj.rbegin(); it != node.adj.rend(); it++) {
+            const Edge& edge = *it;
+            if (!edge.valid) continue;
+            if (getPrev(edge.dest) == nodeId) {
+                toTraverse.push(edge.dest);
+            }
         }
     }
+    return mstPath;
+}
 
-    try {
-        // Add edge from the last visited node back to the starting node
-        Edge lastEdge = getEdge(currentNodeId, 0);
-        currentPath.addToPath(lastEdge);
-    } catch (std::out_of_range& error) {
-        // No cycle possible => return invalid Path.
-        return Path({}, INFINITY);
+CityNetwork::Path CityNetwork::triangularApproxHeuristic() {
+    vector<int> mstPath = calcMST(0);
+    Path path;
+    for (int i = 0; i < mstPath.size(); i++)
+        path.addToPath(getEdge(mstPath[i], mstPath[(i + 1) % mstPath.size()]));
+    return path;
+}
+
+CityNetwork::Path CityNetwork::pureGreedyAlgorithm() {
+    clearVisits();
+    Path path;
+    int currNodeId = 0;
+    visit(currNodeId);
+    while (path.getPathSize() < nodeCount - 1) {
+        Edge minEdge;
+        for (Edge &edge: getAdj(currNodeId)) {
+            if (!edge.valid) continue;
+            if (!isVisited(edge.dest) && edge.dist < minEdge.dist) minEdge = edge;
+        }
+        if (!minEdge.valid) return Path({}, INFINITY);
+        path.addToPath(minEdge);
+        currNodeId = minEdge.dest;
+        visit(currNodeId);
     }
-
-    return currentPath;
+    path.addToPath(getEdge(currNodeId, 0));
+    return path;
 }
 
 ostream &operator<<(ostream &os, const CityNetwork &cityNet) {
-    os << "Nodes: " << cityNet.nodes.size() << '\n'
-       << "Edge Count: " << cityNet.edgeCount << flush;
+    os << "Nodes: " << cityNet.nodeCount << '\n'
+       << "Edge Count: " << cityNet.edgeCount;
+    if (cityNet.fakeEdgeCount > 0)
+        os << "\nAdded Fake Edges: " << cityNet.fakeEdgeCount;
+    os << flush;
     return os;
 }
 

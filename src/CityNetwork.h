@@ -14,30 +14,55 @@
 
 
 class CityNetwork {
+    enum GraphType {
+        graphNormal,
+        graphLabeled,
+        graphLatLon,
+    };
+    GraphType graphType;
 public:
     struct Edge {
         int origin;
         int dest;
         double dist;
-        Edge() : origin(-1), dest(-1), dist(INFINITY) {}
-        Edge(int origin, int dest, double dist) :
-            origin(origin), dest(dest), dist(dist){}
+        bool real;
+        bool valid;
+        Edge() : origin(-1), dest(-1), dist(INFINITY), real(false), valid(false) {}
+        Edge(int origin, int dest, double dist, bool real = true, bool valid = true) :
+            origin(origin), dest(dest), dist(dist), real(real), valid(valid) {}
+        [[nodiscard]] Edge reverse() const { return {dest, origin, dist, real}; }
     };
 
     struct Node {
         int id;
-        std::list<Edge> adj;
+        std::vector<Edge> adj;
         std::string label;
         double lat;
         double lon;
-        bool visited;
-        Node() : id(-1), lat(INFINITY), lon(INFINITY), visited(false) {};
-        explicit Node(int id, std::list<Edge> adj = {}) :
-            id(id), adj(std::move(adj)), lat(INFINITY), lon(INFINITY), visited(false) {}
-        Node(int id, std::string label, std::list<Edge> adj = {}) :
-            id(id), label(std::move(label)), adj(std::move(adj)), lat(INFINITY), lon(INFINITY), visited(false) {}
-        Node(int id, double lat, double lon, std::list<Edge> adj = {}) :
-            id(id), lat(lat), lon(lon), adj(std::move(adj)), visited(false) {}
+        int prev = -1;
+        bool visited = false;
+        Node() : id(-1), lat(INFINITY), lon(INFINITY) {};
+        explicit Node(int id, std::vector<Edge> adj = {}) :
+            id(id), adj(std::move(adj)), lat(INFINITY), lon(INFINITY) {}
+        Node(int id, std::string label, std::vector<Edge> adj = {}) :
+            id(id), label(std::move(label)), adj(std::move(adj)), lat(INFINITY), lon(INFINITY) {}
+        Node(int id, double lat, double lon, std::vector<Edge> adj = {}) :
+            id(id), lat(lat), lon(lon), adj(std::move(adj)) {}
+
+        constexpr double operator-(const Node& other) const {
+            // Haversine Formula
+            if (other.lat == INFINITY || other.lon == INFINITY) return INFINITY; // Invalid.
+            if (this->lat == INFINITY || this->lon == INFINITY) return INFINITY; // Invalid.
+            const double radLat1 = this->lat * M_PI / 180;
+            const double radLat2 = other.lat * M_PI / 180;
+            const double deltaLat = radLat2 - radLat1;
+            const double deltaLon = (other.lon - this->lon) * M_PI / 180;
+            const double sinLat = sin(deltaLat / 2);
+            const double sinLon = sin(deltaLon / 2);
+            double aux = sinLat * sinLat + cos(radLat1) * cos(radLat2) * sinLon * sinLon;
+            aux = 2.0 * atan2 (sqrt(aux), sqrt(1.0 - aux));
+            return 6371000 * aux;
+        }
     };
 
     class Path {
@@ -46,10 +71,10 @@ public:
     public:
         explicit Path(std::list<Edge> path = {}, double distance = 0.0) :
             path(std::move(path)), distance(distance) {}
-        const std::list<Edge>& getPath() const { return path; }
-        double getDistance() const { return distance; }
-        size_t getPathSize() const { return path.size(); }
-        bool isValid() const { return distance != INFINITY; }
+        [[nodiscard]] const std::list<Edge>& getPath() const { return path; }
+        [[nodiscard]] double getDistance() const { return distance; }
+        [[nodiscard]] size_t getPathSize() const { return path.size(); }
+        [[nodiscard]] bool isValid() const { return distance != INFINITY; }
         void addToPath(Edge edge) {
             path.push_back(edge);
             distance += edge.dist;
@@ -64,7 +89,9 @@ public:
     };
 private:
     std::vector<Node> nodes;
-    long edgeCount;
+    unsigned int nodeCount;
+    unsigned long long edgeCount;
+    unsigned long long fakeEdgeCount;
 
     void initializeEdges(const CSV& edgesCSV);
     void initializeNodes(const CSV& nodesCSV);
@@ -72,15 +99,21 @@ private:
     void clearData();
     void addNode(const Node &node);
     void addEdge(const Edge &edge);
-    std::list<Edge> getAdj(int nodeId);
     bool nodeExists(int nodeId);
-    Edge getEdge(int nodeId1, int nodeId2);
     Node& getNode(int nodeId);
+    std::vector<Edge> getAdj(int nodeId);
+    Edge getEdge(int nodeId1, int nodeId2);
     void clearVisits();
     bool isVisited(int nodeId);
     void visit(int nodeId);
     void unvisit(int nodeId);
+    void clearPrevs();
+    int getPrev(int nodeId);
+    void setPrev(int nodeId, int prev);
+    void unsetPrev(int nodeId);
     void backtrackingHelper(int currNodeId, Path currentPath, Path& bestPath);
+    std::vector<int> calcMST(int rootId);
+    void completeEdges();
 public:
     /**
      * @brief Default constructor.
@@ -103,9 +136,10 @@ public:
 
     Path triangularApproxHeuristic();
 
-    /* TODO: path otherHeuristics(); */
+    Path pureGreedyAlgorithm();
 
     friend std::ostream& operator<<(std::ostream& os, const CityNetwork& cityNet);
+
 };
 
 std::ostream &operator<<(std::ostream &os, const CityNetwork::Path &cityPath);

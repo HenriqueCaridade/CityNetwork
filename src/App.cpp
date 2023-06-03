@@ -5,7 +5,11 @@
 #include <iostream>
 #include <algorithm>
 #include <cmath>
+#include <fstream>
 #include <filesystem>
+#include <chrono>
+#include <thread>
+#include <future>
 
 #include "App.h"
 using namespace std;
@@ -127,32 +131,46 @@ void App::mainMenu() {
     runMenu("City Manager", {
             {'1', "Backtracking Algorithm"},
             {'2', "Triangular Approximation Heuristic"},
-            {'3', "Other Heuristics"},
+            {'3', "Purely Greedy Algorithm"},
             {'d', "Data Selection"},
             {'x', "Exit App"}
     }, [this](char choice) -> bool {
         switch(choice){
             case '1': {
                 cout << "Backtracking Algorithm Solution Loading..." << endl;
+                auto start = chrono::high_resolution_clock::now();
                 CityNetwork::Path backtrackingPath = cityNet.backtracking();
+                auto duration = chrono::duration_cast<chrono::milliseconds>(chrono::high_resolution_clock::now() - start);
                 if (backtrackingPath.isValid()) {
-                    cout << backtrackingPath << endl;
+                    cout << "Distance: " << fixed << setprecision(2) << backtrackingPath.getDistance() << endl;
                 } else {
                     cout << "No path found!" << endl;
                 }
+                cout << "Time spent: " << fixed << setprecision(3) << ((double) duration.count() / 1000) << "s" << endl;
             } break;
             case '2': {
                 cout << "Triangular Approximation Heuristic Solution Loading..." << endl;
+                auto start = chrono::high_resolution_clock::now();
                 CityNetwork::Path triangularApproxPath = cityNet.triangularApproxHeuristic();
+                auto duration = chrono::duration_cast<chrono::microseconds>(chrono::high_resolution_clock::now() - start);
                 if (triangularApproxPath.isValid()) {
-                    cout << triangularApproxPath << endl;
+                    cout << "Distance: " << fixed << setprecision(2) << triangularApproxPath.getDistance() << endl;
                 } else {
                     cout << "No path found!" << endl;
                 }
+                cout << "Time spent: " << fixed << setprecision(6) << ((double) duration.count() / 1000000)  << "s" << endl;
             } break;
             case '3': {
-                cout << "Other Heuristics Solution Not Implemented Yet!" << endl;
-                /* TODO */
+                cout << "Purely Greedy Algorithm Solution Loading..." << endl;
+                auto start = chrono::high_resolution_clock::now();
+                CityNetwork::Path greedyPath = cityNet.pureGreedyAlgorithm();
+                auto duration = chrono::duration_cast<chrono::microseconds>(chrono::high_resolution_clock::now() - start);
+                if (greedyPath.isValid()) {
+                    cout << "Distance: " << fixed << setprecision(2) << greedyPath.getDistance() << endl;
+                } else {
+                    cout << "No path found!" << endl;
+                }
+                cout << "Time spent: " << fixed << setprecision(6) << ((double) duration.count() / 1000000)  << "s" << endl;
             } break;
             case 'd': dataSelectionMenu(); return true;
             case 'x': return false;
@@ -165,22 +183,69 @@ void App::mainMenu() {
 // DATA SELECTION MENU //
 // =================== //
 
+void App::getAll(const string& outFile, bool fullPaths) {
+    const string projectPath = filesystem::current_path().parent_path().string() + '\\';
+    ofstream out(projectPath + outFile);
+    CityNetwork cityNetwork;
+    out << "Triangular Approximation Heuristic Solutions:\n" << endl;
+    for (const char *str : {"graphs-toy/shipping.csv", "graphs-toy/stadiums.csv", "graphs-toy/tourism.csv", "graphs-extra/edges_25.csv", "graphs-extra/edges_50.csv", "graphs-extra/edges_75.csv", "graphs-extra/edges_100.csv", "graphs-extra/edges_200.csv", "graphs-extra/edges_300.csv", "graphs-extra/edges_400.csv", "graphs-extra/edges_500.csv", "graphs-extra/edges_600.csv", "graphs-extra/edges_700.csv", "graphs-extra/edges_800.csv", "graphs-extra/edges_900.csv", "graphs-real/graph1/", "graphs-real/graph2/", "graphs-real/graph3/"}) {
+        out << str << " Graph Initialization...\n";
+        string fullPath = projectPath + str;
+        cout << "Calculating " << str << endl;
+        auto start = chrono::high_resolution_clock::now();
+        cityNetwork.initializeData(fullPath, filesystem::is_directory(fullPath));
+        auto duration = chrono::duration_cast<chrono::microseconds>(chrono::high_resolution_clock::now() - start);
+        out << cityNetwork << endl;
+        out << "Initialization time: " << ((double) duration.count() / 1000000)  << "s" << endl;
+        out << str << " Data:\n" << endl;
+        out << "Triangular Approximation Heuristic:" << endl;
+        start = chrono::high_resolution_clock::now();
+        CityNetwork::Path triangularApproxPath = cityNetwork.triangularApproxHeuristic();
+        duration = chrono::duration_cast<chrono::microseconds>(chrono::high_resolution_clock::now() - start);
+        if (fullPaths) out << triangularApproxPath << '\n';
+        else out << "Distance: " << fixed << setprecision(2) << triangularApproxPath.getDistance() << '\n';
+        out << "Time spent: " << fixed << setprecision(6) << ((double) duration.count() / 1000000)  << "s\n" << endl;
+        out << "Greedy Algorithm:" << endl;
+        start = chrono::high_resolution_clock::now();
+        CityNetwork::Path greedyPath = cityNetwork.pureGreedyAlgorithm();
+        duration = chrono::duration_cast<chrono::microseconds>(chrono::high_resolution_clock::now() - start);
+        if (fullPaths) out << greedyPath << '\n';
+        else out << "Distance: " << fixed << setprecision(2) << greedyPath.getDistance() << '\n';
+        out << "Time spent: " << fixed << setprecision(6) << ((double) duration.count() / 1000000)  << "s\n" << endl;
+    }
+}
+
 void App::dataSelectionMenu() {
     const string title = "Data Selection";
     clear_screen();
     bool running = true;
+    const string projectPath = filesystem::current_path().parent_path().string() + '\\';
     while (running) {
-        const string projectPath = filesystem::current_path().parent_path().string() + '\\';
         string text = string("Current Path: ") + projectPath;
         cout << "\n" << getTitle(title) << string(spaceBetween, ' ') << '\n'
              << vertical << ' ' << text << '\n' << getBottomLine() << endl;
-
+        bool calc = false;
         string pathChosen, pathChosenFull;
         while (true){
             pathChosen = pathChosenFull = "";
             cout << vertical << " Path:" << flush;
             cin >> pathChosen;
-            if (pathChosen == "x") { running = false; break; }
+            if (pathChosen ==  "$ALL") {
+                // Get All data to a file. (Without Paths)
+                getAll("all_output.txt");
+                clear_screen();
+                cout << "Calculated All and saved to all_output.txt" << endl;
+                calc = true;
+                break;
+            }
+            if (pathChosen == "$ALLP") {
+                // Get All data to a file. (With Paths)
+                getAll("all_output.txt", true);
+                clear_screen();
+                cout << "Calculated All and saved to all_output.txt" << endl;
+                calc = true;
+                break;
+            }
             pathChosenFull = projectPath + pathChosen;
             for (char& c : pathChosenFull) if (c == '/') c = '\\';
             if (filesystem::is_directory(pathChosenFull)) {
@@ -189,9 +254,9 @@ void App::dataSelectionMenu() {
             }
             cout << getBottomLine() << endl;
             if (filesystem::exists(pathChosenFull)) break;
-            cout << vertical << " Path Doesn't Exist. Try Again. (x to Leave)" << endl;
+            cout << vertical << " Path Doesn't Exist. Try Again." << endl;
         }
-        if (!running) break;
+        if (calc) continue;
         bool allGood = true;
         if (filesystem::is_directory(pathChosenFull)){
             if (!filesystem::exists(pathChosenFull + "edges.csv")) {

@@ -29,6 +29,7 @@ class App {
     std::string datasetPathFull;
     std::string datasetPath;
     CityNetwork cityNet;
+    long long progress;
 
     /**
      * @brief Gets a Floating Point input from the user.
@@ -108,7 +109,7 @@ class App {
      * @param Lambda f
      */
     void runMenu(const std::string& title, const std::vector<std::pair<char, std::string>>& options, Lambda f, bool clearFirst = true, bool clearLast = true);
-
+    static void getAll(const std::string& outFile, bool fullPaths = false);
     void initializeData();
 public:
     /**
