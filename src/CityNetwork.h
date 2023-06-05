@@ -315,6 +315,7 @@ private:
      * Calculates the pre-order traversing order of the MST starting at the root Node given.
      * @param rootId The root Node's ID.
      * @return The traversing order.
+     *
      */
     std::vector<int> calcMST(int rootId);
     /**
@@ -378,7 +379,7 @@ public:
      * @brief Performs the greedy algorithm to find an approximate shortest path in the city network.
      * @return The approximate shortest path.
      *
-     * he time complexity of the greedy algorithm is O(E*V)
+     * The time complexity of the greedy algorithm is O(E*V)
      * */
     Path greedyAlgorithm();
 
