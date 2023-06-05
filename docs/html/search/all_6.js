@@ -1,6 +1,8 @@
 var searchData=
 [
-  ['id_0',['id',['../struct_city_network_1_1_node.html#a6b479d00336414ef7da2759d1a693c31',1,'CityNetwork::Node']]],
-  ['initializedata_1',['initializeData',['../class_city_network.html#aa1ae7f0acafe538e2a8fd2c1727027a0',1,'CityNetwork']]],
-  ['isvalid_2',['isValid',['../class_city_network_1_1_path.html#a147be1d13ea394351d5faec8990d130d',1,'CityNetwork::Path']]]
+  ['getdistance_0',['getDistance',['../class_city_network_1_1_path.html#aecb6db844ed0ce11885a48f7ca5fa256',1,'CityNetwork::Path']]],
+  ['getpath_1',['getPath',['../class_city_network_1_1_path.html#a7b52449d944569e98289735415696ba3',1,'CityNetwork::Path']]],
+  ['getpathsize_2',['getPathSize',['../class_city_network_1_1_path.html#ac5d34439c1302d8e9fc496d6d47750b5',1,'CityNetwork::Path']]],
+  ['greateredge_3',['GreaterEdge',['../class_greater_edge.html',1,'']]],
+  ['greedyalgorithm_4',['greedyAlgorithm',['../class_city_network.html#acfd0cfa7f4c8aaf7efc8e2cd515fbe5f',1,'CityNetwork']]]
 ];

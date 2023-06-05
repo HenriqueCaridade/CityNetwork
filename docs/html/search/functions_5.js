@@ -1,4 +1,7 @@
 var searchData=
 [
-  ['node_0',['Node',['../struct_city_network_1_1_node.html#a369dad0e355535c5620f297546ea5cc2',1,'CityNetwork::Node::Node()'],['../struct_city_network_1_1_node.html#a4d7707162dcb2dc44521fa98ae6dce7f',1,'CityNetwork::Node::Node(int id, std::vector&lt; Edge &gt; adj={})'],['../struct_city_network_1_1_node.html#a1435cfe199815e3b81db2d5bb8311f1a',1,'CityNetwork::Node::Node(int id, std::string label, std::vector&lt; Edge &gt; adj={})'],['../struct_city_network_1_1_node.html#a4662faa60198d107c258569b27a1ea6f',1,'CityNetwork::Node::Node(int id, double lat, double lon, std::vector&lt; Edge &gt; adj={})']]]
+  ['getdistance_0',['getDistance',['../class_city_network_1_1_path.html#aecb6db844ed0ce11885a48f7ca5fa256',1,'CityNetwork::Path']]],
+  ['getpath_1',['getPath',['../class_city_network_1_1_path.html#a7b52449d944569e98289735415696ba3',1,'CityNetwork::Path']]],
+  ['getpathsize_2',['getPathSize',['../class_city_network_1_1_path.html#ac5d34439c1302d8e9fc496d6d47750b5',1,'CityNetwork::Path']]],
+  ['greedyalgorithm_3',['greedyAlgorithm',['../class_city_network.html#acfd0cfa7f4c8aaf7efc8e2cd515fbe5f',1,'CityNetwork']]]
 ];

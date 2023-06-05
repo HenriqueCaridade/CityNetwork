@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['path_0',['Path',['../class_city_network_1_1_path.html#a0530388716602298d66197243eaabc69',1,'CityNetwork::Path']]]
+  ['nearestneighbor_0',['nearestNeighbor',['../class_city_network.html#aefc91339dd33e0fe74519ca1dad0ed2a',1,'CityNetwork']]],
+  ['node_1',['Node',['../struct_city_network_1_1_node.html#a369dad0e355535c5620f297546ea5cc2',1,'CityNetwork::Node::Node()'],['../struct_city_network_1_1_node.html#a4d7707162dcb2dc44521fa98ae6dce7f',1,'CityNetwork::Node::Node(int id, std::vector&lt; Edge &gt; adj={})'],['../struct_city_network_1_1_node.html#a1435cfe199815e3b81db2d5bb8311f1a',1,'CityNetwork::Node::Node(int id, std::string label, std::vector&lt; Edge &gt; adj={})'],['../struct_city_network_1_1_node.html#a4662faa60198d107c258569b27a1ea6f',1,'CityNetwork::Node::Node(int id, double lat, double lon, std::vector&lt; Edge &gt; adj={})']]]
 ];

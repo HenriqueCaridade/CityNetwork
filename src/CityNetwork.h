@@ -34,12 +34,25 @@ public:
         int origin; /**< The ID of the origin node. */
         int dest; /**< The ID of the destination node. */
         double dist; /**< The distance between the origin and destination nodes. */
+        bool used = false; /**< Flag indicating if the edge is used in the greedy algorithm. */
         bool real; /**< Flag indicating if the edge is real, meaning it was given by the file when initializing. */
         bool valid; /**< Flag indicating if the edge is valid. */
+        /**
+         * @brief Default contructor for the Edge struct.
+         * */
         Edge() : origin(-1), dest(-1), dist(INFINITY), real(false), valid(false) {}
+        /**
+         * @brief The constructor for the Edge struct.
+         * @param origin The id of the origin Node.
+         * @param dest The id of the destination Node.
+         * @param dist The distance or cost of the Edge.
+         * @param real Whether the Edge was given by the user given file (true) or was it made up to complete the graph (false).
+         * @param valid Whether or not the Edge is valid.
+         */
         Edge(int origin, int dest, double dist, bool real = true, bool valid = true) :
             origin(origin), dest(dest), dist(dist), real(real), valid(valid) {}
         [[nodiscard]] Edge reverse() const { return {dest, origin, dist, real}; }
+        bool operator<(const Edge& otherEdge) const { return this->dist < otherEdge.dist; }
     };
 
     /**
@@ -88,7 +101,11 @@ public:
         Node(int id, double lat, double lon, std::vector<Edge> adj = {}) :
             id(id), lat(lat), lon(lon), adj(std::move(adj)) {}
 
-        /* TODO DOCUMENTATION */
+        /**
+         * @brief Overload of the subtraction operator between Nodes to mean the calculation of the haversine distance between the two nodes.
+         * @param other The Node it will measure the distance to.
+         * @return The haversine calculation between the two nodes.
+         */
         constexpr double operator-(const Node& other) const {
             // Haversine Formula
             if (other.lat == INFINITY || other.lon == INFINITY) return INFINITY; // Invalid.
@@ -160,6 +177,14 @@ public:
             path.pop_back();
         }
         /**
+         * @brief Returns the origin of the whole path.
+         * */
+        int front() { return this->path.front().origin; }
+        /**
+         * @brief Returns the destination of the whole path.
+         * */
+         int back() { return this->path.back().dest; }
+        /**
          * @brief Compare two paths based on their total distance.
          * @param pathObj The path object to compare with.
          * @return True if this path has a smaller distance than the other path, false otherwise.
@@ -218,14 +243,14 @@ private:
      * @param nodeId The ID of the node.
      * @return The vector of adjacent edges.
      */
-    std::vector<Edge> getAdj(int nodeId);
+    std::vector<Edge>& getAdj(int nodeId);
     /**
      * @brief Get the edge between two nodes.
      * @param nodeId1 The ID of the first node.
      * @param nodeId2 The ID of the second node.
      * @return The edge between the two nodes.
      */
-    Edge getEdge(int nodeId1, int nodeId2);
+    Edge& getEdge(int nodeId1, int nodeId2);
     /**
      * @brief Check if a node exists in the city network.
      * @param nodeId The ID of the node.
@@ -239,7 +264,7 @@ private:
     /**
      * @brief Check if a node has been visited.
      * @param nodeId The ID of the node.
-     * @return True if the node has been visited, false otherwise.
+     * @return true if the node has been visited, false otherwise.
      */
     bool isVisited(int nodeId);
     /**
@@ -253,12 +278,48 @@ private:
      */
     void unvisit(int nodeId);
 
-    /* TODO DOCUMENTATION */
+    /**
+    * @brief Clear the prev attribute of all nodes in the city network.
+    */
     void clearPrevs();
+    /**
+     * @brief Gets the previous node id (prev attribute).
+     * @param nodeId The Node it's going to get the prev attribute from.
+     * @return The previous node id.
+     */
     int getPrev(int nodeId);
+    /**
+     * @brief Sets the Node's prev attribute to the given value.
+     * @param nodeId The Node's ID.
+     * @param prev The previous Node ID.
+     */
     void setPrev(int nodeId, int prev);
-    void unsetPrev(int nodeId);
+    /**
+    * @brief Clear the used attribute of all edges in the city network.
+    */
+    void clearUses();
+    /**
+     * @brief Checks if an edge is used.
+     * @param originId The origin Node's ID.
+     * @param destId The destination Node's ID.
+     * @return true if edge is used, false otherwise.
+     */
+    bool isUsed(int originId, int destId);
+    /**
+     * @brief Sets edge used attribute to true.
+     * @param originId The origin Node's ID.
+     * @param destId The destination Node's ID.
+     */
+    void use(int originId, int destId);
+    /**
+     * Calculates the pre-order traversing order of the MST starting at the root Node given.
+     * @param rootId The root Node's ID.
+     * @return The traversing order.
+     */
     std::vector<int> calcMST(int rootId);
+    /**
+     * @brief Completes the graph with fake edges not given by the user.
+     */
     void completeEdges();
 
     /**
@@ -292,23 +353,41 @@ public:
 
     /**
      * @brief Perform the backtracking algorithm to find the shortest path in the city network.
-     * @return The shortest path found by the backtracking algorithm.
+     * @return The shortest path.
      *
      * The time complexity of the backtracking algorithm is O((V - 1)!).
      */
     Path backtracking();
     /**
      * @brief Perform the triangular approximation heuristic algorithm to find an approximate shortest path in the city network.
-     * @return An approximate shortest path found by the triangular approximation heuristic algorithm.
+     * @return The approximate shortest path.
      *
      * The time complexity of the triangular approximation heuristic algorithm is O(E*log(V)).
      */
-    Path triangularApproxHeuristic();
+    Path triangularApproximation();
 
-    /* TODO DOCUMENTATION */
-    Path pureGreedyAlgorithm();
+    /**
+     * @brief Performs the nearest neighbor algorithm to find an approximate shortest path in the city network.
+     * @return The approximate shortest path.
+     *
+     * The time complexity of the nearest neighbor algorithm is O(V).
+     * */
+    Path nearestNeighbor();
 
-    /* TODO DOCUMENTATION */
+    /**
+     * @brief Performs the greedy algorithm to find an approximate shortest path in the city network.
+     * @return The approximate shortest path.
+     *
+     * he time complexity of the greedy algorithm is O(E*V)
+     * */
+    Path greedyAlgorithm();
+
+    /**
+     * @brief Overload the stream insertion operator to print a CityNetwork object.
+     * @param os The output stream.
+     * @param cityNet The CityNetwork object to print.
+     * @return The output stream.
+     * */
     friend std::ostream& operator<<(std::ostream& os, const CityNetwork& cityNet);
 };
 

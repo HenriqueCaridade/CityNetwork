@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['triangularapproxheuristic_0',['triangularApproxHeuristic',['../class_city_network.html#ae936f4d8973b315ebc22921e2f48ea20',1,'CityNetwork']]]
+  ['start_0',['start',['../class_app.html#a45e80958bad2ae75a2a152028a66021c',1,'App']]]
 ];

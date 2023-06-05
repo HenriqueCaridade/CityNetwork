@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['path_0',['Path',['../class_city_network_1_1_path.html',1,'CityNetwork']]]
+  ['node_0',['Node',['../struct_city_network_1_1_node.html',1,'CityNetwork']]]
 ];

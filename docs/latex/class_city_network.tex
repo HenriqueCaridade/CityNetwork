@@ -29,17 +29,17 @@ void \mbox{\hyperlink{class_city_network_aa1ae7f0acafe538e2a8fd2c1727027a0}{init
 \begin{DoxyCompactList}\small\item\em Initializes the \mbox{\hyperlink{class_city_network}{City\+Network}} object with data from a CSV file or directory of CSV files. \end{DoxyCompactList}\item 
 \mbox{\hyperlink{class_city_network_1_1_path}{Path}} \mbox{\hyperlink{class_city_network_a5a16e9b08bb518b1508dcfd18c28a532}{backtracking}} ()
 \begin{DoxyCompactList}\small\item\em Perform the backtracking algorithm to find the shortest path in the city network. \end{DoxyCompactList}\item 
-\mbox{\hyperlink{class_city_network_1_1_path}{Path}} \mbox{\hyperlink{class_city_network_ae936f4d8973b315ebc22921e2f48ea20}{triangular\+Approx\+Heuristic}} ()
+\mbox{\hyperlink{class_city_network_1_1_path}{Path}} \mbox{\hyperlink{class_city_network_a6bb1ecc47932d1965c52e50e1e7555b7}{triangular\+Approximation}} ()
 \begin{DoxyCompactList}\small\item\em Perform the triangular approximation heuristic algorithm to find an approximate shortest path in the city network. \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{class_city_network_aab5d9b4f4d6f0f597397f3e90b02e226}\label{class_city_network_aab5d9b4f4d6f0f597397f3e90b02e226}} 
-\mbox{\hyperlink{class_city_network_1_1_path}{Path}} {\bfseries pure\+Greedy\+Algorithm} ()
-\end{DoxyCompactItemize}
+\mbox{\hyperlink{class_city_network_1_1_path}{Path}} \mbox{\hyperlink{class_city_network_aefc91339dd33e0fe74519ca1dad0ed2a}{nearest\+Neighbor}} ()
+\begin{DoxyCompactList}\small\item\em Performs the nearest neighbor algorithm to find an approximate shortest path in the city network. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{class_city_network_1_1_path}{Path}} \mbox{\hyperlink{class_city_network_acfd0cfa7f4c8aaf7efc8e2cd515fbe5f}{greedy\+Algorithm}} ()
+\begin{DoxyCompactList}\small\item\em Performs the greedy algorithm to find an approximate shortest path in the city network. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \doxysubsection*{Friends}
 \begin{DoxyCompactItemize}
 \item 
-\mbox{\Hypertarget{class_city_network_a9ca5d565c0c702c18a5dbc087a0c1d11}\label{class_city_network_a9ca5d565c0c702c18a5dbc087a0c1d11}} 
-std\+::ostream \& {\bfseries operator$<$$<$} (std\+::ostream \&os, const \mbox{\hyperlink{class_city_network}{City\+Network}} \&city\+Net)
-\end{DoxyCompactItemize}
+std\+::ostream \& \mbox{\hyperlink{class_city_network_a9ca5d565c0c702c18a5dbc087a0c1d11}{operator$<$$<$}} (std\+::ostream \&os, const \mbox{\hyperlink{class_city_network}{City\+Network}} \&city\+Net)
+\begin{DoxyCompactList}\small\item\em Overload the stream insertion operator to print a \mbox{\hyperlink{class_city_network}{City\+Network}} object. \end{DoxyCompactList}\end{DoxyCompactItemize}
 
 
 \doxysubsection{Detailed Description}
@@ -89,9 +89,22 @@ Constructs a new \mbox{\hyperlink{class_city_network}{City\+Network}} object and
 Perform the backtracking algorithm to find the shortest path in the city network. 
 
 \begin{DoxyReturn}{Returns}
-The shortest path found by the backtracking algorithm.
+The shortest path.
 \end{DoxyReturn}
-The time complexity of the backtracking algorithm is O((V -\/ 1)!). \mbox{\Hypertarget{class_city_network_aa1ae7f0acafe538e2a8fd2c1727027a0}\label{class_city_network_aa1ae7f0acafe538e2a8fd2c1727027a0}} 
+The time complexity of the backtracking algorithm is O((V -\/ 1)!). \mbox{\Hypertarget{class_city_network_acfd0cfa7f4c8aaf7efc8e2cd515fbe5f}\label{class_city_network_acfd0cfa7f4c8aaf7efc8e2cd515fbe5f}} 
+\index{CityNetwork@{CityNetwork}!greedyAlgorithm@{greedyAlgorithm}}
+\index{greedyAlgorithm@{greedyAlgorithm}!CityNetwork@{CityNetwork}}
+\doxysubsubsection{\texorpdfstring{greedyAlgorithm()}{greedyAlgorithm()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{class_city_network_1_1_path}{City\+Network\+::\+Path}} City\+Network\+::greedy\+Algorithm (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Performs the greedy algorithm to find an approximate shortest path in the city network. 
+
+\begin{DoxyReturn}{Returns}
+The approximate shortest path.
+\end{DoxyReturn}
+he time complexity of the greedy algorithm is O(\+E$\ast$\+V) \mbox{\Hypertarget{class_city_network_aa1ae7f0acafe538e2a8fd2c1727027a0}\label{class_city_network_aa1ae7f0acafe538e2a8fd2c1727027a0}} 
 \index{CityNetwork@{CityNetwork}!initializeData@{initializeData}}
 \index{initializeData@{initializeData}!CityNetwork@{CityNetwork}}
 \doxysubsubsection{\texorpdfstring{initializeData()}{initializeData()}}
@@ -108,22 +121,58 @@ Initializes the \mbox{\hyperlink{class_city_network}{City\+Network}} object with
 {\em is\+Directory} & Flag indicating if the dataset\+Path is a directory. \\
 \hline
 \end{DoxyParams}
-\mbox{\Hypertarget{class_city_network_ae936f4d8973b315ebc22921e2f48ea20}\label{class_city_network_ae936f4d8973b315ebc22921e2f48ea20}} 
-\index{CityNetwork@{CityNetwork}!triangularApproxHeuristic@{triangularApproxHeuristic}}
-\index{triangularApproxHeuristic@{triangularApproxHeuristic}!CityNetwork@{CityNetwork}}
-\doxysubsubsection{\texorpdfstring{triangularApproxHeuristic()}{triangularApproxHeuristic()}}
-{\footnotesize\ttfamily \mbox{\hyperlink{class_city_network_1_1_path}{City\+Network\+::\+Path}} City\+Network\+::triangular\+Approx\+Heuristic (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+\mbox{\Hypertarget{class_city_network_aefc91339dd33e0fe74519ca1dad0ed2a}\label{class_city_network_aefc91339dd33e0fe74519ca1dad0ed2a}} 
+\index{CityNetwork@{CityNetwork}!nearestNeighbor@{nearestNeighbor}}
+\index{nearestNeighbor@{nearestNeighbor}!CityNetwork@{CityNetwork}}
+\doxysubsubsection{\texorpdfstring{nearestNeighbor()}{nearestNeighbor()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{class_city_network_1_1_path}{City\+Network\+::\+Path}} City\+Network\+::nearest\+Neighbor (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Performs the nearest neighbor algorithm to find an approximate shortest path in the city network. 
+
+\begin{DoxyReturn}{Returns}
+The approximate shortest path.
+\end{DoxyReturn}
+The time complexity of the nearest neighbor algorithm is O(\+V). \mbox{\Hypertarget{class_city_network_a6bb1ecc47932d1965c52e50e1e7555b7}\label{class_city_network_a6bb1ecc47932d1965c52e50e1e7555b7}} 
+\index{CityNetwork@{CityNetwork}!triangularApproximation@{triangularApproximation}}
+\index{triangularApproximation@{triangularApproximation}!CityNetwork@{CityNetwork}}
+\doxysubsubsection{\texorpdfstring{triangularApproximation()}{triangularApproximation()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{class_city_network_1_1_path}{City\+Network\+::\+Path}} City\+Network\+::triangular\+Approximation (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
 
 
 
 Perform the triangular approximation heuristic algorithm to find an approximate shortest path in the city network. 
 
 \begin{DoxyReturn}{Returns}
-An approximate shortest path found by the triangular approximation heuristic algorithm.
+The approximate shortest path.
 \end{DoxyReturn}
 The time complexity of the triangular approximation heuristic algorithm is O(\+E$\ast$log(\+V)). 
 
+\doxysubsection{Friends And Related Function Documentation}
+\mbox{\Hypertarget{class_city_network_a9ca5d565c0c702c18a5dbc087a0c1d11}\label{class_city_network_a9ca5d565c0c702c18a5dbc087a0c1d11}} 
+\index{CityNetwork@{CityNetwork}!operator$<$$<$@{operator$<$$<$}}
+\index{operator$<$$<$@{operator$<$$<$}!CityNetwork@{CityNetwork}}
+\doxysubsubsection{\texorpdfstring{operator$<$$<$}{operator<<}}
+{\footnotesize\ttfamily std\+::ostream \& operator$<$$<$ (\begin{DoxyParamCaption}\item[{std\+::ostream \&}]{os,  }\item[{const \mbox{\hyperlink{class_city_network}{City\+Network}} \&}]{city\+Net }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [friend]}}
+
+
+
+Overload the stream insertion operator to print a \mbox{\hyperlink{class_city_network}{City\+Network}} object. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em os} & The output stream. \\
+\hline
+{\em city\+Net} & The \mbox{\hyperlink{class_city_network}{City\+Network}} object to print. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The output stream. 
+\end{DoxyReturn}
+
+
 The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
 \item 
-src/City\+Network.\+h\item 
-src/City\+Network.\+cpp\end{DoxyCompactItemize}
+C\+:/\+Users/user2/\+CLion\+Projects/\+City\+Network/src/City\+Network.\+h\item 
+C\+:/\+Users/user2/\+CLion\+Projects/\+City\+Network/src/City\+Network.\+cpp\end{DoxyCompactItemize}

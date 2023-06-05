@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['start_0',['start',['../class_app.html#a45e80958bad2ae75a2a152028a66021c',1,'App']]]
+  ['path_0',['Path',['../class_city_network_1_1_path.html#a0530388716602298d66197243eaabc69',1,'CityNetwork::Path']]]
 ];

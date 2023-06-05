@@ -87,9 +87,9 @@ void CityNetwork::initializeEdges(const CSV &edgesCSV) {
 
 void CityNetwork::completeEdges() {
     for (Node &node : nodes) {
-        for (int id = 0; id < nodes.size(); id++) {
-            if (node.id == id)
-                continue;
+        if (node.id < 0) continue;
+        for (int id = node.id + 1; id < nodes.size(); id++) {
+            if (getNode(id).id < 0) continue;
             Edge &edge = node.adj[id];
             if (edge.origin == -1 or edge.dest == -1) { // Non-existent Edge
                 if (graphType == graphLatLon) {
@@ -117,7 +117,7 @@ void CityNetwork::addEdge(const CityNetwork::Edge &edge) {
     getNode(edge.dest).adj.at(edge.origin) = edge.reverse();
 }
 
-vector<CityNetwork::Edge> CityNetwork::getAdj(int nodeId) {
+vector<CityNetwork::Edge>& CityNetwork::getAdj(int nodeId) {
     if (nodes.size() <= nodeId) throw std::out_of_range("There isn't a node " + to_string(nodeId) + "!");
     return getNode(nodeId).adj;
 }
@@ -131,7 +131,7 @@ CityNetwork::Node& CityNetwork::getNode(int nodeId) {
     return nodes.at(nodeId);
 }
 
-CityNetwork::Edge CityNetwork::getEdge(int nodeId1, int nodeId2) {
+CityNetwork::Edge& CityNetwork::getEdge(int nodeId1, int nodeId2) {
     if (nodes.size() <= nodeId1) throw std::out_of_range("There isn't a node " + to_string(nodeId1) + "!");
     if (nodes.size() <= nodeId2) throw std::out_of_range("There isn't a node " + to_string(nodeId2) + "!");
     return getAdj(nodeId1).at(nodeId2);
@@ -165,8 +165,21 @@ void CityNetwork::setPrev(int nodeId, int prev) {
     getNode(nodeId).prev = prev;
 }
 
-void CityNetwork::unsetPrev(int nodeId) {
-    getNode(nodeId).prev = -1;
+void CityNetwork::clearUses() {
+    for (Node &node : nodes) {
+        for (Edge &edge : node.adj) {
+            edge.used = false;
+        }
+    }
+}
+
+bool CityNetwork::isUsed(int originId, int destId) {
+    return getEdge(originId, destId).used;
+}
+
+void CityNetwork::use(int originId, int destId) {
+    getEdge(originId, destId).used = true;
+    getEdge(destId, originId).used = true;
 }
 
 void CityNetwork::backtrackingHelper(int currentNodeId, Path currentPath, Path& bestPath) {
@@ -234,7 +247,7 @@ vector<int> CityNetwork::calcMST(int rootId) {
     return mstPath;
 }
 
-CityNetwork::Path CityNetwork::triangularApproxHeuristic() {
+CityNetwork::Path CityNetwork::triangularApproximation() {
     vector<int> mstPath = calcMST(0);
     Path path;
     for (int i = 0; i < mstPath.size(); i++)
@@ -242,7 +255,7 @@ CityNetwork::Path CityNetwork::triangularApproxHeuristic() {
     return path;
 }
 
-CityNetwork::Path CityNetwork::pureGreedyAlgorithm() {
+CityNetwork::Path CityNetwork::nearestNeighbor() {
     clearVisits();
     Path path;
     int currNodeId = 0;
@@ -259,6 +272,74 @@ CityNetwork::Path CityNetwork::pureGreedyAlgorithm() {
         visit(currNodeId);
     }
     path.addToPath(getEdge(currNodeId, 0));
+    return path;
+}
+
+class GreaterEdge {
+public:
+    bool operator()(const CityNetwork::Edge& edge1, const CityNetwork::Edge& edge2) {
+        return edge2 < edge1;
+    }
+};
+
+CityNetwork::Path CityNetwork::greedyAlgorithm() {
+    clearUses();
+    clearVisits();
+    // The amount of edges attached to a node.
+    vector<pair<int,int>> nodeEdges = vector(nodes.size(), pair<int,int>{0, -1});
+    int nodesFinished = 0;
+    priority_queue<Edge, vector<Edge>, GreaterEdge> pq;
+    for (Node &node : nodes) {
+        if (node.id < 0) continue;
+        for (int nodeId = node.id + 1; nodeId < nodes.size(); nodeId++) {
+            if (getNode(nodeId).id < 0) continue;
+            Edge edge = getEdge(node.id, nodeId);
+            if (edge.valid) pq.push(edge);
+        }
+    }
+    while (nodesFinished != nodeCount) { // Last 2 nodes to connect.
+        Edge edge = pq.top(); pq.pop();
+        if (nodeEdges[edge.origin].first == 2) continue;
+        if (nodeEdges[edge.dest].first == 2) continue;
+        if (nodeEdges[edge.origin].first == 1 && nodeEdges[edge.dest].first == 1) {
+            // Verify if it doesn't finish the cycle too early
+            if (nodesFinished != nodeCount - 2 && nodeEdges[edge.origin].second == nodeEdges[edge.dest].second) continue; // Cycle
+            int prevId = nodeEdges[edge.dest].second;
+            for (auto &[count, cycleId]: nodeEdges) {
+                if (cycleId == prevId) {
+                    cycleId = nodeEdges[edge.origin].second; // Update to the new cycle id
+                }
+            }
+            nodesFinished += 2;
+        } else if (nodeEdges[edge.origin].first == 1) {
+            nodeEdges[edge.dest].second = nodeEdges[edge.origin].second;
+            nodesFinished++;
+        } else if (nodeEdges[edge.dest].first == 1) {
+            nodeEdges[edge.origin].second = nodeEdges[edge.dest].second;
+            nodesFinished++;
+        } else {
+            nodeEdges[edge.origin].second = edge.origin;
+            nodeEdges[edge.dest].second = edge.origin;
+        }
+        use(edge.origin, edge.dest);
+        nodeEdges[edge.origin].first++;
+        nodeEdges[edge.dest].first++;
+    }
+    Path path;
+    int currId = 0;
+    visit(currId);
+    while (path.getPathSize() < nodeCount - 1) {
+        for (Edge &edge : getAdj(currId)) {
+            if (!edge.valid) continue;
+            if (!isVisited(edge.dest) && isUsed(currId, edge.dest)) {
+                path.addToPath(edge);
+                currId = edge.dest;
+                visit(currId);
+                break;
+            }
+        }
+    }
+    path.addToPath(getEdge(path.back(), path.front()));
     return path;
 }
 
@@ -284,6 +365,3 @@ ostream &operator<<(ostream &os, const CityNetwork::Path &cityPath) {
     }
     return os;
 }
-
-
-

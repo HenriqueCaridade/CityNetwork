@@ -131,7 +131,8 @@ void App::mainMenu() {
     runMenu("City Manager", {
             {'1', "Backtracking Algorithm"},
             {'2', "Triangular Approximation Heuristic"},
-            {'3', "Purely Greedy Algorithm"},
+            {'3', "Nearest Neighbor Algorithm"},
+            {'4', "Greedy Algorithm"},
             {'d', "Data Selection"},
             {'x', "Exit App"}
     }, [this](char choice) -> bool {
@@ -151,22 +152,34 @@ void App::mainMenu() {
             case '2': {
                 cout << "Triangular Approximation Heuristic Solution Loading..." << endl;
                 auto start = chrono::high_resolution_clock::now();
-                CityNetwork::Path triangularApproxPath = cityNet.triangularApproxHeuristic();
+                CityNetwork::Path path = cityNet.triangularApproximation();
                 auto duration = chrono::duration_cast<chrono::microseconds>(chrono::high_resolution_clock::now() - start);
-                if (triangularApproxPath.isValid()) {
-                    cout << "Distance: " << fixed << setprecision(2) << triangularApproxPath.getDistance() << endl;
+                if (path.isValid()) {
+                    cout << "Distance: " << fixed << setprecision(2) << path.getDistance() << endl;
                 } else {
                     cout << "No path found!" << endl;
                 }
                 cout << "Time spent: " << fixed << setprecision(6) << ((double) duration.count() / 1000000)  << "s" << endl;
             } break;
             case '3': {
-                cout << "Purely Greedy Algorithm Solution Loading..." << endl;
+                cout << "Nearest Neighbor Algorithm Solution Loading..." << endl;
                 auto start = chrono::high_resolution_clock::now();
-                CityNetwork::Path greedyPath = cityNet.pureGreedyAlgorithm();
+                CityNetwork::Path path = cityNet.nearestNeighbor();
                 auto duration = chrono::duration_cast<chrono::microseconds>(chrono::high_resolution_clock::now() - start);
-                if (greedyPath.isValid()) {
-                    cout << "Distance: " << fixed << setprecision(2) << greedyPath.getDistance() << endl;
+                if (path.isValid()) {
+                    cout << "Distance: " << fixed << setprecision(2) << path.getDistance() << endl;
+                } else {
+                    cout << "No path found!" << endl;
+                }
+                cout << "Time spent: " << fixed << setprecision(6) << ((double) duration.count() / 1000000)  << "s" << endl;
+            } break;
+            case '4': {
+                cout << "Greedy Algorithm Solution Loading..." << endl;
+                auto start = chrono::high_resolution_clock::now();
+                CityNetwork::Path path = cityNet.greedyAlgorithm();
+                auto duration = chrono::duration_cast<chrono::microseconds>(chrono::high_resolution_clock::now() - start);
+                if (path.isValid()) {
+                    cout << "Distance: " << fixed << setprecision(2) << path.getDistance() << endl;
                 } else {
                     cout << "No path found!" << endl;
                 }
@@ -187,7 +200,7 @@ void App::getAll(const string& outFile, bool fullPaths) {
     const string projectPath = filesystem::current_path().parent_path().string() + '\\';
     ofstream out(projectPath + outFile);
     CityNetwork cityNetwork;
-    out << "Triangular Approximation Heuristic Solutions:\n" << endl;
+    out << "All Graphs Solutions:\n" << endl;
     for (const char *str : {"graphs-toy/shipping.csv", "graphs-toy/stadiums.csv", "graphs-toy/tourism.csv", "graphs-extra/edges_25.csv", "graphs-extra/edges_50.csv", "graphs-extra/edges_75.csv", "graphs-extra/edges_100.csv", "graphs-extra/edges_200.csv", "graphs-extra/edges_300.csv", "graphs-extra/edges_400.csv", "graphs-extra/edges_500.csv", "graphs-extra/edges_600.csv", "graphs-extra/edges_700.csv", "graphs-extra/edges_800.csv", "graphs-extra/edges_900.csv", "graphs-real/graph1/", "graphs-real/graph2/", "graphs-real/graph3/"}) {
         out << str << " Graph Initialization...\n";
         string fullPath = projectPath + str;
@@ -198,19 +211,27 @@ void App::getAll(const string& outFile, bool fullPaths) {
         out << cityNetwork << endl;
         out << "Initialization time: " << ((double) duration.count() / 1000000)  << "s" << endl;
         out << str << " Data:\n" << endl;
+        CityNetwork::Path path;
         out << "Triangular Approximation Heuristic:" << endl;
         start = chrono::high_resolution_clock::now();
-        CityNetwork::Path triangularApproxPath = cityNetwork.triangularApproxHeuristic();
+        path = cityNetwork.triangularApproximation();
         duration = chrono::duration_cast<chrono::microseconds>(chrono::high_resolution_clock::now() - start);
-        if (fullPaths) out << triangularApproxPath << '\n';
-        else out << "Distance: " << fixed << setprecision(2) << triangularApproxPath.getDistance() << '\n';
+        if (fullPaths) out << path << '\n';
+        else out << "Distance: " << fixed << setprecision(2) << path.getDistance() << '\n';
+        out << "Time spent: " << fixed << setprecision(6) << ((double) duration.count() / 1000000)  << "s\n" << endl;
+        out << "Nearest Neighbor Algorithm:" << endl;
+        start = chrono::high_resolution_clock::now();
+        path = cityNetwork.nearestNeighbor();
+        duration = chrono::duration_cast<chrono::microseconds>(chrono::high_resolution_clock::now() - start);
+        if (fullPaths) out << path << '\n';
+        else out << "Distance: " << fixed << setprecision(2) << path.getDistance() << '\n';
         out << "Time spent: " << fixed << setprecision(6) << ((double) duration.count() / 1000000)  << "s\n" << endl;
         out << "Greedy Algorithm:" << endl;
         start = chrono::high_resolution_clock::now();
-        CityNetwork::Path greedyPath = cityNetwork.pureGreedyAlgorithm();
+        path = cityNetwork.greedyAlgorithm();
         duration = chrono::duration_cast<chrono::microseconds>(chrono::high_resolution_clock::now() - start);
-        if (fullPaths) out << greedyPath << '\n';
-        else out << "Distance: " << fixed << setprecision(2) << greedyPath.getDistance() << '\n';
+        if (fullPaths) out << path << '\n';
+        else out << "Distance: " << fixed << setprecision(2) << path.getDistance() << '\n';
         out << "Time spent: " << fixed << setprecision(6) << ((double) duration.count() / 1000000)  << "s\n" << endl;
     }
 }

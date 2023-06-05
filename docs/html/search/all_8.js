@@ -1,4 +1,6 @@
 var searchData=
 [
-  ['node_0',['Node',['../struct_city_network_1_1_node.html',1,'CityNetwork::Node'],['../struct_city_network_1_1_node.html#a369dad0e355535c5620f297546ea5cc2',1,'CityNetwork::Node::Node()'],['../struct_city_network_1_1_node.html#a4d7707162dcb2dc44521fa98ae6dce7f',1,'CityNetwork::Node::Node(int id, std::vector&lt; Edge &gt; adj={})'],['../struct_city_network_1_1_node.html#a1435cfe199815e3b81db2d5bb8311f1a',1,'CityNetwork::Node::Node(int id, std::string label, std::vector&lt; Edge &gt; adj={})'],['../struct_city_network_1_1_node.html#a4662faa60198d107c258569b27a1ea6f',1,'CityNetwork::Node::Node(int id, double lat, double lon, std::vector&lt; Edge &gt; adj={})']]]
+  ['label_0',['label',['../struct_city_network_1_1_node.html#ad28a9e063af6b85c66cd7341fedafcac',1,'CityNetwork::Node']]],
+  ['lat_1',['lat',['../struct_city_network_1_1_node.html#a0e61cba817c8b9cf268abb0855d513f9',1,'CityNetwork::Node']]],
+  ['lon_2',['lon',['../struct_city_network_1_1_node.html#a52934ad2d70f26abd8ece192b88dd15c',1,'CityNetwork::Node']]]
 ];

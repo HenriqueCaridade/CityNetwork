@@ -12,11 +12,16 @@ Represents an edge between two nodes in the city network.
 \doxysubsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-\mbox{\Hypertarget{struct_city_network_1_1_edge_a3ebc63fdf75470506bf87c4e8ce02420}\label{struct_city_network_1_1_edge_a3ebc63fdf75470506bf87c4e8ce02420}} 
-{\bfseries Edge} (int \mbox{\hyperlink{struct_city_network_1_1_edge_aa1fa6fe6eefa6d7924297a7784ca36fc}{origin}}, int \mbox{\hyperlink{struct_city_network_1_1_edge_ac227f95cc5873ecafd951627108fc508}{dest}}, double \mbox{\hyperlink{struct_city_network_1_1_edge_a229dd942d6d82fca7c0103a582084b2a}{dist}}, bool \mbox{\hyperlink{struct_city_network_1_1_edge_a64794e23758b6f311e448f1c6d88c579}{real}}=true, bool \mbox{\hyperlink{struct_city_network_1_1_edge_a2a6c3c6e9b0167a5ec69856f659719d6}{valid}}=true)
-\item 
+\mbox{\Hypertarget{struct_city_network_1_1_edge_ac8cc7cd05c7c2f2b5f16415c9c59b969}\label{struct_city_network_1_1_edge_ac8cc7cd05c7c2f2b5f16415c9c59b969}} 
+{\bfseries Edge} ()
+\begin{DoxyCompactList}\small\item\em Default contructor for the \mbox{\hyperlink{struct_city_network_1_1_edge}{Edge}} struct. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{struct_city_network_1_1_edge_a3ebc63fdf75470506bf87c4e8ce02420}{Edge}} (int \mbox{\hyperlink{struct_city_network_1_1_edge_aa1fa6fe6eefa6d7924297a7784ca36fc}{origin}}, int \mbox{\hyperlink{struct_city_network_1_1_edge_ac227f95cc5873ecafd951627108fc508}{dest}}, double \mbox{\hyperlink{struct_city_network_1_1_edge_a229dd942d6d82fca7c0103a582084b2a}{dist}}, bool \mbox{\hyperlink{struct_city_network_1_1_edge_a64794e23758b6f311e448f1c6d88c579}{real}}=true, bool \mbox{\hyperlink{struct_city_network_1_1_edge_a2a6c3c6e9b0167a5ec69856f659719d6}{valid}}=true)
+\begin{DoxyCompactList}\small\item\em The constructor for the \mbox{\hyperlink{struct_city_network_1_1_edge}{Edge}} struct. \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{struct_city_network_1_1_edge_a2ed81e6e0eb0bd4e8f8ecef208089235}\label{struct_city_network_1_1_edge_a2ed81e6e0eb0bd4e8f8ecef208089235}} 
 \mbox{\hyperlink{struct_city_network_1_1_edge}{Edge}} {\bfseries reverse} () const
+\item 
+\mbox{\Hypertarget{struct_city_network_1_1_edge_a8b2bc9b551959e8962ba79e69bb30ac6}\label{struct_city_network_1_1_edge_a8b2bc9b551959e8962ba79e69bb30ac6}} 
+bool {\bfseries operator$<$} (const \mbox{\hyperlink{struct_city_network_1_1_edge}{Edge}} \&other\+Edge) const
 \end{DoxyCompactItemize}
 \doxysubsection*{Public Attributes}
 \begin{DoxyCompactItemize}
@@ -26,6 +31,8 @@ int \mbox{\hyperlink{struct_city_network_1_1_edge_aa1fa6fe6eefa6d7924297a7784ca3
 int \mbox{\hyperlink{struct_city_network_1_1_edge_ac227f95cc5873ecafd951627108fc508}{dest}}
 \item 
 double \mbox{\hyperlink{struct_city_network_1_1_edge_a229dd942d6d82fca7c0103a582084b2a}{dist}}
+\item 
+bool \mbox{\hyperlink{struct_city_network_1_1_edge_af31376be9d36b925e1c2acd1ff1140e7}{used}} = false
 \item 
 bool \mbox{\hyperlink{struct_city_network_1_1_edge_a64794e23758b6f311e448f1c6d88c579}{real}}
 \item 
@@ -37,6 +44,32 @@ bool \mbox{\hyperlink{struct_city_network_1_1_edge_a2a6c3c6e9b0167a5ec69856f6597
 Represents an edge between two nodes in the city network. 
 
 The \mbox{\hyperlink{struct_city_network_1_1_edge}{Edge}} struct represents an edge between two nodes in the city network. It stores the origin node, destination node, and the distance between them. 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{struct_city_network_1_1_edge_a3ebc63fdf75470506bf87c4e8ce02420}\label{struct_city_network_1_1_edge_a3ebc63fdf75470506bf87c4e8ce02420}} 
+\index{CityNetwork::Edge@{CityNetwork::Edge}!Edge@{Edge}}
+\index{Edge@{Edge}!CityNetwork::Edge@{CityNetwork::Edge}}
+\doxysubsubsection{\texorpdfstring{Edge()}{Edge()}}
+{\footnotesize\ttfamily City\+Network\+::\+Edge\+::\+Edge (\begin{DoxyParamCaption}\item[{int}]{origin,  }\item[{int}]{dest,  }\item[{double}]{dist,  }\item[{bool}]{real = {\ttfamily true},  }\item[{bool}]{valid = {\ttfamily true} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+The constructor for the \mbox{\hyperlink{struct_city_network_1_1_edge}{Edge}} struct. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em origin} & The id of the origin \mbox{\hyperlink{struct_city_network_1_1_node}{Node}}. \\
+\hline
+{\em dest} & The id of the destination \mbox{\hyperlink{struct_city_network_1_1_node}{Node}}. \\
+\hline
+{\em dist} & The distance or cost of the \mbox{\hyperlink{struct_city_network_1_1_edge}{Edge}}. \\
+\hline
+{\em real} & Whether the \mbox{\hyperlink{struct_city_network_1_1_edge}{Edge}} was given by the user given file (true) or was it made up to complete the graph (false). \\
+\hline
+{\em valid} & Whether or not the \mbox{\hyperlink{struct_city_network_1_1_edge}{Edge}} is valid. \\
+\hline
+\end{DoxyParams}
+
 
 \doxysubsection{Member Data Documentation}
 \mbox{\Hypertarget{struct_city_network_1_1_edge_ac227f95cc5873ecafd951627108fc508}\label{struct_city_network_1_1_edge_ac227f95cc5873ecafd951627108fc508}} 
@@ -63,7 +96,13 @@ The ID of the origin node. \mbox{\Hypertarget{struct_city_network_1_1_edge_a6479
 \doxysubsubsection{\texorpdfstring{real}{real}}
 {\footnotesize\ttfamily bool City\+Network\+::\+Edge\+::real}
 
-Flag indicating if the edge is real, meaning it was given by the file when initializing. \mbox{\Hypertarget{struct_city_network_1_1_edge_a2a6c3c6e9b0167a5ec69856f659719d6}\label{struct_city_network_1_1_edge_a2a6c3c6e9b0167a5ec69856f659719d6}} 
+Flag indicating if the edge is real, meaning it was given by the file when initializing. \mbox{\Hypertarget{struct_city_network_1_1_edge_af31376be9d36b925e1c2acd1ff1140e7}\label{struct_city_network_1_1_edge_af31376be9d36b925e1c2acd1ff1140e7}} 
+\index{CityNetwork::Edge@{CityNetwork::Edge}!used@{used}}
+\index{used@{used}!CityNetwork::Edge@{CityNetwork::Edge}}
+\doxysubsubsection{\texorpdfstring{used}{used}}
+{\footnotesize\ttfamily bool City\+Network\+::\+Edge\+::used = false}
+
+Flag indicating if the edge is used in the greedy algorithm. \mbox{\Hypertarget{struct_city_network_1_1_edge_a2a6c3c6e9b0167a5ec69856f659719d6}\label{struct_city_network_1_1_edge_a2a6c3c6e9b0167a5ec69856f659719d6}} 
 \index{CityNetwork::Edge@{CityNetwork::Edge}!valid@{valid}}
 \index{valid@{valid}!CityNetwork::Edge@{CityNetwork::Edge}}
 \doxysubsubsection{\texorpdfstring{valid}{valid}}
@@ -73,4 +112,4 @@ Flag indicating if the edge is valid.
 
 The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
 \item 
-src/City\+Network.\+h\end{DoxyCompactItemize}
+C\+:/\+Users/user2/\+CLion\+Projects/\+City\+Network/src/City\+Network.\+h\end{DoxyCompactItemize}

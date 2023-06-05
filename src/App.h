@@ -27,7 +27,6 @@ class App {
     std::string datasetPathFull;
     std::string datasetPath;
     CityNetwork cityNet;
-    long long progress;
 
     /**
      * @brief Gets a Floating Point input from the user.

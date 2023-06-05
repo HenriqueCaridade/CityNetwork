@@ -20,9 +20,8 @@ Represents a node in the city network.
 \begin{DoxyCompactList}\small\item\em Constructs a node with the given ID, label and the adjacent nodes (empty if none given). \end{DoxyCompactList}\item 
 \mbox{\hyperlink{struct_city_network_1_1_node_a4662faa60198d107c258569b27a1ea6f}{Node}} (int \mbox{\hyperlink{struct_city_network_1_1_node_a6b479d00336414ef7da2759d1a693c31}{id}}, double \mbox{\hyperlink{struct_city_network_1_1_node_a0e61cba817c8b9cf268abb0855d513f9}{lat}}, double \mbox{\hyperlink{struct_city_network_1_1_node_a52934ad2d70f26abd8ece192b88dd15c}{lon}}, std\+::vector$<$ \mbox{\hyperlink{struct_city_network_1_1_edge}{Edge}} $>$ \mbox{\hyperlink{struct_city_network_1_1_node_a39467af155794fffc04f1f4b75ccc290}{adj}}=\{\})
 \begin{DoxyCompactList}\small\item\em Constructs a node with the given ID, latitude, longitude and the adjacent nodes (empty if none given). \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{struct_city_network_1_1_node_a3dbaaa72f87a185c2ee1a63b83db280d}\label{struct_city_network_1_1_node_a3dbaaa72f87a185c2ee1a63b83db280d}} 
-constexpr double {\bfseries operator-\/} (const \mbox{\hyperlink{struct_city_network_1_1_node}{Node}} \&other) const
-\end{DoxyCompactItemize}
+constexpr double \mbox{\hyperlink{struct_city_network_1_1_node_a3dbaaa72f87a185c2ee1a63b83db280d}{operator-\/}} (const \mbox{\hyperlink{struct_city_network_1_1_node}{Node}} \&other) const
+\begin{DoxyCompactList}\small\item\em Overload of the subtraction operator between Nodes to mean the calculation of the haversine distance between the two nodes. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \doxysubsection*{Public Attributes}
 \begin{DoxyCompactItemize}
 \item 
@@ -117,6 +116,27 @@ Constructs a node with the given ID, latitude, longitude and the adjacent nodes 
 \end{DoxyParams}
 
 
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{struct_city_network_1_1_node_a3dbaaa72f87a185c2ee1a63b83db280d}\label{struct_city_network_1_1_node_a3dbaaa72f87a185c2ee1a63b83db280d}} 
+\index{CityNetwork::Node@{CityNetwork::Node}!operator-\/@{operator-\/}}
+\index{operator-\/@{operator-\/}!CityNetwork::Node@{CityNetwork::Node}}
+\doxysubsubsection{\texorpdfstring{operator-\/()}{operator-()}}
+{\footnotesize\ttfamily constexpr double City\+Network\+::\+Node\+::operator-\/ (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{struct_city_network_1_1_node}{Node}} \&}]{other }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [constexpr]}}
+
+
+
+Overload of the subtraction operator between Nodes to mean the calculation of the haversine distance between the two nodes. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em other} & The \mbox{\hyperlink{struct_city_network_1_1_node}{Node}} it will measure the distance to. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The haversine calculation between the two nodes. 
+\end{DoxyReturn}
+
+
 \doxysubsection{Member Data Documentation}
 \mbox{\Hypertarget{struct_city_network_1_1_node_a39467af155794fffc04f1f4b75ccc290}\label{struct_city_network_1_1_node_a39467af155794fffc04f1f4b75ccc290}} 
 \index{CityNetwork::Node@{CityNetwork::Node}!adj@{adj}}
@@ -164,4 +184,4 @@ Flag indicating if the node has been visited.
 
 The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
 \item 
-src/City\+Network.\+h\end{DoxyCompactItemize}
+C\+:/\+Users/user2/\+CLion\+Projects/\+City\+Network/src/City\+Network.\+h\end{DoxyCompactItemize}

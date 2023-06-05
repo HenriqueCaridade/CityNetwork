@@ -5,10 +5,14 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.5"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>My Project: Member List</title>
+<title>CityNetwork: Member List</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
@@ -21,7 +25,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">My Project
+   <div id="projectname">CityNetwork
    </div>
   </td>
  </tr>
@@ -46,6 +50,23 @@ $(function() {
 /* @license-end */
 </script>
 <div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(document).ready(function(){initNavTree('class_city_network.html',''); initResizable(); });
+/* @license-end */
+</script>
+<div id="doc-content">
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
      onmouseover="return searchBox.OnSearchSelectShow()"
@@ -67,7 +88,6 @@ $(function() {
 </div>
 </div>
 
-</div><!-- top -->
 <div class="header">
   <div class="headertitle"><div class="title">CityNetwork Member List</div></div>
 </div><!--header-->
@@ -78,14 +98,18 @@ $(function() {
   <tr class="even"><td class="entry"><a class="el" href="class_city_network.html#a5a16e9b08bb518b1508dcfd18c28a532">backtracking</a>()</td><td class="entry"><a class="el" href="class_city_network.html">CityNetwork</a></td><td class="entry"></td></tr>
   <tr class="odd"><td class="entry"><a class="el" href="class_city_network.html#a3d0fd9b230c1e4f4de102058e5fd9d03">CityNetwork</a>()</td><td class="entry"><a class="el" href="class_city_network.html">CityNetwork</a></td><td class="entry"></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="class_city_network.html#a60f2ba8ca899d37ac845ea0db7228e75">CityNetwork</a>(const std::string &amp;datasetPath, bool isDirectory)</td><td class="entry"><a class="el" href="class_city_network.html">CityNetwork</a></td><td class="entry"><span class="mlabel">explicit</span></td></tr>
-  <tr class="odd"><td class="entry"><a class="el" href="class_city_network.html#aa1ae7f0acafe538e2a8fd2c1727027a0">initializeData</a>(const std::string &amp;datasetPath, bool isDirectory)</td><td class="entry"><a class="el" href="class_city_network.html">CityNetwork</a></td><td class="entry"></td></tr>
-  <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>operator&lt;&lt;</b> (defined in <a class="el" href="class_city_network.html">CityNetwork</a>)</td><td class="entry"><a class="el" href="class_city_network.html">CityNetwork</a></td><td class="entry"><span class="mlabel">friend</span></td></tr>
-  <tr bgcolor="#f0f0f0" class="odd"><td class="entry"><b>pureGreedyAlgorithm</b>() (defined in <a class="el" href="class_city_network.html">CityNetwork</a>)</td><td class="entry"><a class="el" href="class_city_network.html">CityNetwork</a></td><td class="entry"></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="class_city_network.html#ae936f4d8973b315ebc22921e2f48ea20">triangularApproxHeuristic</a>()</td><td class="entry"><a class="el" href="class_city_network.html">CityNetwork</a></td><td class="entry"></td></tr>
+  <tr class="odd"><td class="entry"><a class="el" href="class_city_network.html#acfd0cfa7f4c8aaf7efc8e2cd515fbe5f">greedyAlgorithm</a>()</td><td class="entry"><a class="el" href="class_city_network.html">CityNetwork</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="class_city_network.html#aa1ae7f0acafe538e2a8fd2c1727027a0">initializeData</a>(const std::string &amp;datasetPath, bool isDirectory)</td><td class="entry"><a class="el" href="class_city_network.html">CityNetwork</a></td><td class="entry"></td></tr>
+  <tr class="odd"><td class="entry"><a class="el" href="class_city_network.html#aefc91339dd33e0fe74519ca1dad0ed2a">nearestNeighbor</a>()</td><td class="entry"><a class="el" href="class_city_network.html">CityNetwork</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="class_city_network.html#a9ca5d565c0c702c18a5dbc087a0c1d11">operator&lt;&lt;</a></td><td class="entry"><a class="el" href="class_city_network.html">CityNetwork</a></td><td class="entry"><span class="mlabel">friend</span></td></tr>
+  <tr class="odd"><td class="entry"><a class="el" href="class_city_network.html#a6bb1ecc47932d1965c52e50e1e7555b7">triangularApproximation</a>()</td><td class="entry"><a class="el" href="class_city_network.html">CityNetwork</a></td><td class="entry"></td></tr>
 </table></div><!-- contents -->
+</div><!-- doc-content -->
 <!-- start footer part -->
-<hr class="footer"/><address class="footer"><small>
-Generated by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.5
-</small></address>
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.5 </li>
+  </ul>
+</div>
 </body>
 </html>
